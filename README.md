@@ -10,3 +10,21 @@ There are tags for each chapter of the book. E.g. at the tag `chapter-11-the-wal
 code as present at the end of the chapter.
 
 Commit messages include the expected test status for the commit, e.g. `[RED]` at the start indicates a failing stage.
+
+## Setup
+1. Install `docker` and `docker-compose` via `brew` and `brew cask`
+1. Make sure the shared folder at `/var/lib/docker/openfire` exists and is owned by you so openfire can persist state between container runs.
+   
+   E.g. on OSX run `sudo mkdir -p /var/lib/docker/openfire && sudo chown -Rv $(whoami):staff /var/lib/docker`
+1. Run `docker-compose up`
+1. In the admin console at `localhost:9090`, follow the default setup and then create the user accounts:
+
+   *Username*: _Password_
+   
+   *sniper*: _sniper_
+   
+   *auction-item-54321*: _auction_
+   
+   *auction-item-65432*: _auction_
+
+That's all the setup you need - you're good to go!

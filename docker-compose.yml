@@ -1,0 +1,8 @@
+Openfire:
+  image: sameersbn/openfire:3.10.3-19
+  ports:
+    - "9090:9090"
+    - "5222:5222"
+    - "7777:7777"
+  volumes:
+  - /private/var/lib/docker/openfire:/var/lib/openfire
