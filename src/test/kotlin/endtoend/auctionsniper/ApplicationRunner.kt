@@ -1,8 +1,8 @@
 package endtoend.auctionsniper
 
 import auctionsniper.Main
-import auctionsniper.Main.Companion.STATUS_JOINING
-import auctionsniper.Main.Companion.STATUS_LOST
+import auctionsniper.MainWindow.Companion.STATUS_JOINING
+import auctionsniper.MainWindow.Companion.STATUS_LOST
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 
 class ApplicationRunner {
