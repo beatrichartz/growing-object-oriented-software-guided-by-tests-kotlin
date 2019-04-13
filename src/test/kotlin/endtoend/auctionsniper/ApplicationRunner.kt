@@ -9,6 +9,7 @@ class ApplicationRunner {
     companion object {
         const val SNIPER_ID = "sniper"
         const val SNIPER_PASSWORD = "sniper"
+        const val SNIPER_XMPP_ID = "$SNIPER_ID@$XMPP_HOSTNAME/Auction"
     }
 
     private lateinit var driver: AuctionSniperDriver
@@ -35,5 +36,9 @@ class ApplicationRunner {
 
     fun stop() {
         driver.dispose()
+    }
+
+    fun hasShownSniperIsBidding() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

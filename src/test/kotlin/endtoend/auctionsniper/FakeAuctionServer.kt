@@ -48,6 +48,14 @@ class FakeAuctionServer(itemId: String) {
     fun stop() {
         connection.disconnect()
     }
+
+    fun reportPrice(price: Int, increment: Int, bidder: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    fun hasReceivedBid(bid: Int, sniperId: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
 
 
