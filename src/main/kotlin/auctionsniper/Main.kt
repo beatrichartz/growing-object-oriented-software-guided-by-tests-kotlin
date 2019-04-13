@@ -7,28 +7,23 @@ import javax.swing.SwingUtilities
 
 class Main {
     companion object {
-        const val ARG_HOSTNAME = 0
-        const val ARG_USERNAME = 1
-        const val ARG_PASSWORD = 2
-        const val ARG_ITEM_ID = 3
+        private const val ARG_HOSTNAME = 0
+        private const val ARG_USERNAME = 1
+        private const val ARG_PASSWORD = 2
+        private const val ARG_ITEM_ID = 3
 
-        const val AUCTION_RESOURCE = "Auction"
-        const val ITEM_ID_AS_LOGIN = "auction-%s"
-        const val AUCTION_ID_FORMAT = "$ITEM_ID_AS_LOGIN@%s/$AUCTION_RESOURCE"
+        private const val AUCTION_RESOURCE = "Auction"
+        private const val ITEM_ID_AS_LOGIN = "auction-%s"
+        private const val AUCTION_ID_FORMAT = "$ITEM_ID_AS_LOGIN@%s/$AUCTION_RESOURCE"
 
         fun main(vararg args: String) {
-            Main()
+            val main = Main()
 
-            val connection = connectTo(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD])
-            val chat = connection.chatManager.createChat(
-                    auctionId(args[ARG_ITEM_ID], connection)
-            ) { _: Chat, _: Message ->
-                // nothing yet
-            }
-            chat.sendMessage(Message())
+            main.joinAuction(connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]),
+                    args[ARG_ITEM_ID])
         }
 
-        private fun connectTo(hostname: String, username: String, password: String): XMPPConnection {
+        private fun connection(hostname: String, username: String, password: String): XMPPConnection {
             val connection = XMPPConnection(hostname)
             connection.connect()
             connection.login(username, password)
@@ -47,9 +42,23 @@ class Main {
         startUserInterface()
     }
 
+    private fun joinAuction(connection: XMPPConnection, itemId: String) {
+        val chat = connection.chatManager.createChat(
+                auctionId(itemId, connection)
+        ) { _: Chat, _: Message ->
+            SwingUtilities.invokeLater {
+                ui.showStatus(MainWindow.STATUS_LOST)
+            }
+        }
+
+        chat.sendMessage(Message())
+    }
+
+
     private fun startUserInterface() {
         SwingUtilities.invokeAndWait {
             ui = MainWindow()
         }
     }
 }
+
