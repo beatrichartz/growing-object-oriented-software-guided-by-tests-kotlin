@@ -24,6 +24,12 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    ext.junit_version = '5.4.1'
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
+    testCompile "org.junit.jupiter:junit-jupiter-params:$junit_version"
+    testCompile "org.junit.jupiter:junit-jupiter-engine:$junit_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
 
 sourceSets {
