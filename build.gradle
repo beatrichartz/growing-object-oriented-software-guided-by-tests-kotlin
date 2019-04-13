@@ -25,6 +25,12 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+    ext.smack_version = '3.1.0'
+    compile "org.igniterealtime.smack:smack:$smack_version"
+    compile "org.igniterealtime.smack:smackx:$smack_version"
+
+    testCompile "com.googlecode.windowlicker:windowlicker-swing:r268"
+
     ext.junit_version = '5.4.1'
     testCompile "org.junit.jupiter:junit-jupiter-api:$junit_version"
     testCompile "org.junit.jupiter:junit-jupiter-params:$junit_version"
