@@ -36,6 +36,10 @@ dependencies {
     testCompile "org.junit.jupiter:junit-jupiter-params:$junit_version"
     testCompile "org.junit.jupiter:junit-jupiter-engine:$junit_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    ext.jmock_version = '2.11.0'
+    testCompile "org.jmock:jmock:$jmock_version"
+    testCompile "org.jmock:jmock-junit5:$jmock_version"
 }
 
 sourceSets {
