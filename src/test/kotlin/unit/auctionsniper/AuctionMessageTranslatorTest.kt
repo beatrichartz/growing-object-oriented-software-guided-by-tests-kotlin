@@ -4,7 +4,6 @@ import auctionsniper.AuctionEventListener
 import auctionsniper.AuctionMessageTranslator
 import org.jivesoftware.smack.Chat
 import org.jivesoftware.smack.packet.Message
-import org.jmock.Expectations
 import org.jmock.junit5.JUnit5Mockery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -21,30 +20,26 @@ class AuctionMessageTranslatorTest {
 
     @Test
     internal fun notifiesAuctionClosedWhenCloseMessageReceived() {
-        context.checking(Expectations().apply {
+        context.expect {
             oneOf(listener).auctionClosed()
-        })
+        }.whenRunning {
+            val message = Message()
+            message.body = "SOLVersion: 1.1; Event: CLOSE;"
 
-        val message = Message()
-        message.body = "SOLVersion: 1.1; Event: CLOSE;"
-
-        translator.processMessage(UNUSED_CHAT, message)
-
-        context.assertIsSatisfied()
+            translator.processMessage(UNUSED_CHAT, message)
+        }
     }
 
     @Test
     internal fun notifiesBidDetailsWhenCurrentPriceMessageReceived() {
-        context.checking(Expectations().apply {
+        context.expect {
             exactly(1).of(listener).currentPrice(192, 7)
-        })
+        }.whenRunning {
+            val message = Message()
+            message.body = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: Someone else;"
 
-        val message = Message()
-        message.body = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: Someone else;"
-
-        translator.processMessage(UNUSED_CHAT, message)
-
-        context.assertIsSatisfied()
+            translator.processMessage(UNUSED_CHAT, message)
+        }
     }
 }
 
