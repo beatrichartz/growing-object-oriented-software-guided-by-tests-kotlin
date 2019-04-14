@@ -49,9 +49,9 @@ class Main : SniperListener {
         val chat = connection.chatManager.createChat(auctionId(itemId, connection), null)
 
         val auction = object : Auction {
-            override fun bid(price: Int) {
+            override fun bid(amount: Int) {
                 try {
-                    chat.sendMessage("SOLVersion: 1.1; Command: BID; Price: $price;")
+                    chat.sendMessage(SOLProtocol.bidCommand(amount))
                 } catch (e: XMPPException) {
                     e.printStackTrace()
                 }
@@ -59,7 +59,7 @@ class Main : SniperListener {
         }
 
         chat.addMessageListener(AuctionMessageTranslator(AuctionSniper(auction, this)))
-        chat.sendMessage("SOLVersion: 1.1; Command: JOIN;")
+        chat.sendMessage(SOLProtocol.joinCommand())
     }
 
     private fun disconnectWhenUICloses(connection: XMPPConnection) {

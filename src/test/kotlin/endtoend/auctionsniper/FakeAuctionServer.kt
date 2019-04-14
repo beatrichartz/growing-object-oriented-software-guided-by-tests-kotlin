@@ -1,5 +1,6 @@
 package endtoend.auctionsniper
 
+import auctionsniper.SOLProtocol
 import org.hamcrest.CoreMatchers
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert
@@ -39,11 +40,11 @@ class FakeAuctionServer(internal val itemId: String) {
     }
 
     fun hasReceivedJoinRequestFromSniper(sniperId: String) {
-        receivesAMessageMatching(sniperId, Matchers.equalTo("SOLVersion: 1.1; Command: JOIN;"))
+        receivesAMessageMatching(sniperId, Matchers.equalTo(SOLProtocol.joinCommand()))
     }
 
     fun announceClosed() {
-        currentChat?.sendMessage("SOLVersion: 1.1; Event: CLOSE;")
+        currentChat?.sendMessage(SOLProtocol.closeEvent())
     }
 
     fun stop() {
@@ -51,12 +52,11 @@ class FakeAuctionServer(internal val itemId: String) {
     }
 
     fun reportPrice(price: Int, increment: Int, bidder: String) {
-        currentChat?.sendMessage("SOLVersion: 1.1; Event: PRICE; " +
-                "CurrentPrice: $price; Increment: $increment; bidder: $bidder;")
+        currentChat?.sendMessage(SOLProtocol.priceEvent(price, increment, bidder))
     }
 
     fun hasReceivedBid(bid: Int, sniperId: String) {
-        receivesAMessageMatching(sniperId, Matchers.equalTo("SOLVersion: 1.1; Command: BID; Price: $bid;"))
+        receivesAMessageMatching(sniperId, Matchers.equalTo(SOLProtocol.bidCommand(bid)))
     }
 
     private fun receivesAMessageMatching(sniperId: String, matcher: Matcher<String>) {
