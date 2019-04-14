@@ -5,7 +5,7 @@ import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
 
-class Main : AuctionEventListener {
+class Main : SniperListener {
     companion object {
         private const val ARG_HOSTNAME = 0
         private const val ARG_USERNAME = 1
@@ -46,7 +46,8 @@ class Main : AuctionEventListener {
         disconnectWhenUICloses(connection)
 
         val chat = connection.chatManager.createChat(
-                auctionId(itemId, connection), AuctionMessageTranslator(this))
+                auctionId(itemId, connection), AuctionMessageTranslator(AuctionSniper(this))
+        )
 
         chat.sendMessage("SOLVersion: 1.1; Command: JOIN;")
     }
@@ -59,11 +60,7 @@ class Main : AuctionEventListener {
         })
     }
 
-    override fun currentPrice(price: Int, increment: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun auctionClosed() {
+    override fun sniperLost() {
         SwingUtilities.invokeLater {
             ui.showStatus(MainWindow.STATUS_LOST)
         }
