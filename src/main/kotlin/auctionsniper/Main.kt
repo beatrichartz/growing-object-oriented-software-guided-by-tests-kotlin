@@ -1,13 +1,11 @@
 package auctionsniper
 
-import org.jivesoftware.smack.Chat
 import org.jivesoftware.smack.XMPPConnection
-import org.jivesoftware.smack.packet.Message
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
 
-class Main {
+class Main : AuctionEventListener {
     companion object {
         private const val ARG_HOSTNAME = 0
         private const val ARG_USERNAME = 1
@@ -48,12 +46,7 @@ class Main {
         disconnectWhenUICloses(connection)
 
         val chat = connection.chatManager.createChat(
-                auctionId(itemId, connection)
-        ) { _: Chat, _: Message ->
-            SwingUtilities.invokeLater {
-                ui.showStatus(MainWindow.STATUS_LOST)
-            }
-        }
+                auctionId(itemId, connection), AuctionMessageTranslator(this))
 
         chat.sendMessage("SOLVersion: 1.1; Command: JOIN;")
     }
@@ -66,6 +59,11 @@ class Main {
         })
     }
 
+    override fun auctionClosed() {
+        SwingUtilities.invokeLater {
+            ui.showStatus(MainWindow.STATUS_LOST)
+        }
+    }
 
     private fun startUserInterface() {
         SwingUtilities.invokeAndWait {
