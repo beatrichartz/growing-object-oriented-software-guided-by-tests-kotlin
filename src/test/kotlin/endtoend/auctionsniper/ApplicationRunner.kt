@@ -3,13 +3,15 @@ package endtoend.auctionsniper
 import auctionsniper.Main
 import auctionsniper.MainWindow.Companion.STATUS_JOINING
 import auctionsniper.MainWindow.Companion.STATUS_LOST
+import auctionsniper.MainWindow.Companion.STATUS_BIDDING
+import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 
 class ApplicationRunner {
     companion object {
         const val SNIPER_ID = "sniper"
         const val SNIPER_PASSWORD = "sniper"
-        const val SNIPER_XMPP_ID = "$SNIPER_ID@$XMPP_HOSTNAME/Auction"
+        const val SNIPER_XMPP_ID = "$SNIPER_ID@$XMPP_HOSTNAME/$AUCTION_RESOURCE"
     }
 
     private lateinit var driver: AuctionSniperDriver
@@ -30,6 +32,10 @@ class ApplicationRunner {
         driver.showsSniperStatus(STATUS_JOINING)
     }
 
+    fun hasShownSniperIsBidding() {
+        driver.showsSniperStatus(STATUS_BIDDING)
+    }
+
     fun showsSniperHasLostAuction() {
         driver.showsSniperStatus(STATUS_LOST)
     }
@@ -38,7 +44,4 @@ class ApplicationRunner {
         driver.dispose()
     }
 
-    fun hasShownSniperIsBidding() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

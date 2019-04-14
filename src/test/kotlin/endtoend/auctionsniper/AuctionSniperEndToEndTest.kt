@@ -13,7 +13,7 @@ class AuctionSniperEndToEndTest {
     internal fun sniperJoinsAuctionUntilAuctionCloses() {
         auction.startSellingItem()
         application.startBiddingIn(auction)
-        auction.hasReceivedJoinRequestFromSniper()
+        auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
 
         auction.reportPrice(1000, 98, "other bidder")
         application.hasShownSniperIsBidding()
