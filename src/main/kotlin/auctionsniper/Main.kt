@@ -59,6 +59,10 @@ class Main : AuctionEventListener {
         })
     }
 
+    override fun currentPrice(price: Int, increment: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun auctionClosed() {
         SwingUtilities.invokeLater {
             ui.showStatus(MainWindow.STATUS_LOST)
