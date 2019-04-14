@@ -45,8 +45,14 @@ class Main : SniperListener {
     private fun joinAuction(connection: XMPPConnection, itemId: String) {
         disconnectWhenUICloses(connection)
 
+        val nullAuction = object : Auction {
+            override fun bid(price: Int) {
+
+            }
+        }
+
         val chat = connection.chatManager.createChat(
-                auctionId(itemId, connection), AuctionMessageTranslator(AuctionSniper(this))
+                auctionId(itemId, connection), AuctionMessageTranslator(AuctionSniper(nullAuction, this))
         )
 
         chat.sendMessage("SOLVersion: 1.1; Command: JOIN;")
@@ -61,7 +67,9 @@ class Main : SniperListener {
     }
 
     override fun sniperBidding() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        SwingUtilities.invokeLater {
+            ui.showStatus(MainWindow.STATUS_BIDDING)
+        }
     }
 
     override fun sniperLost() {

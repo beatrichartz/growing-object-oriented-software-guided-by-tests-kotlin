@@ -10,7 +10,7 @@ class AuctionSniperTest {
     private val context = JUnit5Mockery()
     private val sniperListener = context.mock(SniperListener::class.java)
     private val auction = context.mock(Auction::class.java)
-    private val sniper = AuctionSniper(sniperListener)
+    private val sniper = AuctionSniper(auction, sniperListener)
 
     @Test
     internal fun reportsLostWhenAuctionCloses() {
