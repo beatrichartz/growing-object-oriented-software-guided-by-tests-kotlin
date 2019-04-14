@@ -6,7 +6,7 @@ class AuctionSniper(private val sniperListener: SniperListener) : AuctionEventLi
     }
 
     override fun currentPrice(price: Int, increment: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 }
