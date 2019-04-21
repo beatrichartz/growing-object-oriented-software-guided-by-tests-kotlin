@@ -17,7 +17,8 @@ Commit messages include the expected test status for the commit, e.g. `[RED]` at
    
    E.g. on OSX run `sudo mkdir -p /var/lib/docker/openfire && sudo chown -Rv $(whoami):staff /var/lib/docker`
 1. Run `docker-compose up`
-1. In the admin console at `localhost:9090`, follow the default setup and then create the user accounts:
+1. In a browser, open `localhost:9090` and follow the Openfire setup. Make sure to bind to `0.0.0.0`.
+1. Navigate to the admin console to create the user accounts:
 
    *Username*: _Password_
    
