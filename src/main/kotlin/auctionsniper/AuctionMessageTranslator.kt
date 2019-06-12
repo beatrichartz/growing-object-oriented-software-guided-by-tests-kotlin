@@ -1,5 +1,6 @@
 package auctionsniper
 
+import auctionsniper.AuctionEventListener.PriceSource
 import org.jivesoftware.smack.Chat
 import org.jivesoftware.smack.MessageListener
 import org.jivesoftware.smack.packet.Message
@@ -15,7 +16,7 @@ class AuctionMessageTranslator(listener: AuctionEventListener) : MessageListener
         if ("CLOSE" == type) {
             listener.auctionClosed()
         } else if ("PRICE" == type) {
-            listener.currentPrice(event.currentPrice(), event.increment())
+            listener.currentPrice(event.currentPrice(), event.increment(), PriceSource.FromOtherBidder)
         }
     }
 

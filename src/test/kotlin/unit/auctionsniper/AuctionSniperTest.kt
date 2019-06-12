@@ -1,6 +1,7 @@
 package unit.auctionsniper
 
 import auctionsniper.Auction
+import auctionsniper.AuctionEventListener.PriceSource
 import auctionsniper.AuctionSniper
 import auctionsniper.SniperListener
 import org.jmock.junit5.JUnit5Mockery
@@ -30,7 +31,7 @@ class AuctionSniperTest {
             oneOf(auction).bid(price + increment)
             atLeast(1).of(sniperListener).sniperBidding()
         }.whenRunning {
-            sniper.currentPrice(price, increment)
+            sniper.currentPrice(price, increment, PriceSource.FromOtherBidder)
         }
     }
 }
