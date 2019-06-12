@@ -11,6 +11,8 @@ class MainWindow : JFrame("Auction Sniper") {
         const val SNIPER_STATUS_NAME = "sniper status"
         const val STATUS_BIDDING = "Bidding"
         const val STATUS_JOINING = "Joining"
+        const val STATUS_WINNING = "Winning"
+        const val STATUS_WON = "Won"
         const val STATUS_LOST = "Lost"
     }
 
