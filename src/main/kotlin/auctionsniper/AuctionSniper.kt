@@ -8,8 +8,14 @@ class AuctionSniper(private val auction: Auction, private val sniperListener: Sn
     }
 
     override fun currentPrice(price: Int, increment: Int, priceSource: PriceSource) {
-        auction.bid(price + increment)
-        sniperListener.sniperBidding()
+        when (priceSource) {
+            PriceSource.FromSniper ->
+                sniperListener.sniperWinning()
+            PriceSource.FromOtherBidder -> {
+                auction.bid(price + increment)
+                sniperListener.sniperBidding()
+            }
+        }
     }
 
 }

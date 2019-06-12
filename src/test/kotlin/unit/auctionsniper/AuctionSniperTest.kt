@@ -34,4 +34,13 @@ class AuctionSniperTest {
             sniper.currentPrice(price, increment, PriceSource.FromOtherBidder)
         }
     }
+
+    @Test
+    internal fun reportIsWinningWhenCurrentPriceComesFromSniper() {
+        context.expect {
+            atLeast(1).of(sniperListener).sniperWinning()
+        }.whenRunning {
+            sniper.currentPrice(123, 45, PriceSource.FromSniper)
+        }
+    }
 }
