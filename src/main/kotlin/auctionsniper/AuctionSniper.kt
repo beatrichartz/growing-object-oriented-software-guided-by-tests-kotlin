@@ -3,18 +3,24 @@ package auctionsniper
 import auctionsniper.AuctionEventListener.PriceSource
 
 class AuctionSniper(private val auction: Auction, private val sniperListener: SniperListener) : AuctionEventListener {
+    private var isWinning = false
+
     override fun auctionClosed() {
-        sniperListener.sniperLost()
+        if (isWinning) {
+            sniperListener.sniperWon()
+        } else {
+            sniperListener.sniperLost()
+        }
     }
 
     override fun currentPrice(price: Int, increment: Int, priceSource: PriceSource) {
-        when (priceSource) {
-            PriceSource.FromSniper ->
-                sniperListener.sniperWinning()
-            PriceSource.FromOtherBidder -> {
-                auction.bid(price + increment)
-                sniperListener.sniperBidding()
-            }
+        isWinning = priceSource == PriceSource.FromSniper
+
+        if (isWinning) {
+            sniperListener.sniperWinning()
+        } else {
+            auction.bid(price + increment)
+            sniperListener.sniperBidding()
         }
     }
 

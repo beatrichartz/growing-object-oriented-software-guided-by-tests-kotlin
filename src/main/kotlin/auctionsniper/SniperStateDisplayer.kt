@@ -3,6 +3,10 @@ package auctionsniper
 import javax.swing.SwingUtilities
 
 class SniperStateDisplayer(private val ui: MainWindow) : SniperListener {
+    override fun sniperWon() {
+        showStatus(MainWindow.STATUS_WON)
+    }
+
     override fun sniperWinning() {
         showStatus(MainWindow.STATUS_WINNING)
     }
