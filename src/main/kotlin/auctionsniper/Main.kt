@@ -48,7 +48,7 @@ class Main {
         val chat = connection.chatManager.createChat(auctionId(itemId, connection), null)
         val auction = XMPPAuction(chat)
 
-        chat.addMessageListener(AuctionMessageTranslator(AuctionSniper(auction, SniperStateDisplayer(ui))))
+        chat.addMessageListener(AuctionMessageTranslator(connection.user, AuctionSniper(auction, SniperStateDisplayer(ui))))
         auction.join()
     }
 

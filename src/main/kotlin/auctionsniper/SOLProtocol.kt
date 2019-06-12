@@ -20,7 +20,7 @@ object SOLProtocol {
     }
 
     fun priceEvent(price: Int, increment: Int, bidder: String): String {
-        return "${event("PRICE")} CurrentPrice: $price; Increment: $increment; bidder: $bidder;"
+        return "${event("PRICE")} CurrentPrice: $price; Increment: $increment; Bidder: $bidder;"
     }
 
     fun closeEvent(): String {
