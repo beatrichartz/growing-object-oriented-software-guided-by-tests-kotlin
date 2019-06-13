@@ -1,8 +1,8 @@
 package auctionsniper
 
-class SniperState(private val itemId: String,
-                  private val price: Int,
-                  private val bid: Int) {
+class SniperState(internal val itemId: String,
+                  internal val lastPrice: Int,
+                  internal val lastBid: Int) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -11,20 +11,20 @@ class SniperState(private val itemId: String,
         other as SniperState
 
         if (itemId != other.itemId) return false
-        if (price != other.price) return false
-        if (bid != other.bid) return false
+        if (lastPrice != other.lastPrice) return false
+        if (lastBid != other.lastBid) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = itemId.hashCode()
-        result = 31 * result + price
-        result = 31 * result + bid
+        result = 31 * result + lastPrice
+        result = 31 * result + lastBid
         return result
     }
 
     override fun toString(): String {
-        return "SniperState(itemId='$itemId', price=$price, bid=$bid)"
+        return "SniperState(itemId='$itemId', lastPrice=$lastPrice, lastBid=$lastBid)"
     }
 }

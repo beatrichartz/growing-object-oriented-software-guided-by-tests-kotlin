@@ -1,9 +1,9 @@
 package unit.auctionsniper
 
+import auctionsniper.Column
 import auctionsniper.MainWindow
 import auctionsniper.SniperState
 import auctionsniper.SnipersTableModel
-import auctionsniper.SnipersTableModel.Column
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.samePropertyValuesAs
@@ -40,7 +40,7 @@ class SnipersTableModelTest {
                     MainWindow.STATUS_BIDDING)
         }
 
-        assertColumnEquals(Column.ItemIdentifier, "item id")
+        assertColumnEquals(Column.ITEM_IDENTIFIER, "item id")
     }
 
     private fun assertColumnEquals(column: Column, expected: Any) {

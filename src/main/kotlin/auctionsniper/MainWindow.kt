@@ -27,7 +27,6 @@ class MainWindow : JFrame(APPLICATION_TITLE) {
     init {
         name = MAIN_WINDOW_NAME
         fillContentPane(makeSnipersTable())
-        add(sniperStatus)
         pack()
         defaultCloseOperation = EXIT_ON_CLOSE
         isVisible = true
@@ -45,7 +44,7 @@ class MainWindow : JFrame(APPLICATION_TITLE) {
     }
 
     private fun createLabel(initialText: String): JLabel {
-        val result = JLabel(initialText.toString())
+        val result = JLabel(initialText)
         result.name = SNIPER_STATUS_NAME
         result.border = LineBorder(Color.BLACK)
         return result
