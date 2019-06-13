@@ -16,9 +16,11 @@ class ApplicationRunner {
         const val SNIPER_XMPP_ID = "$SNIPER_ID@$XMPP_HOSTNAME/$AUCTION_RESOURCE"
     }
 
+    private lateinit var itemId: String
     private lateinit var driver: AuctionSniperDriver
 
     fun startBiddingIn(auction: FakeAuctionServer) {
+        itemId = auction.itemId
         val thread = Thread {
             try {
                 Main.main(XMPP_HOSTNAME, SNIPER_ID, SNIPER_PASSWORD, auction.itemId)
@@ -34,20 +36,20 @@ class ApplicationRunner {
         driver.showsSniperStatus(STATUS_JOINING)
     }
 
-    fun hasShownSniperIsBidding() {
-        driver.showsSniperStatus(STATUS_BIDDING)
+    fun hasShownSniperIsBidding(lastPrice: Int, lastBid: Int) {
+        driver.showsSniperStatus(itemId, lastPrice, lastBid, STATUS_BIDDING)
     }
 
-    fun hasShownSniperisWinning() {
-        driver.showsSniperStatus(STATUS_WINNING)
+    fun hasShownSniperisWinning(winningBid: Int) {
+        driver.showsSniperStatus(itemId, winningBid, winningBid, STATUS_WINNING)
     }
 
     fun showsSniperHasLostAuction() {
         driver.showsSniperStatus(STATUS_LOST)
     }
 
-    fun showsSniperHasWonAuction() {
-        driver.showsSniperStatus(STATUS_WON)
+    fun showsSniperHasWonAuction(lastPrice: Int) {
+        driver.showsSniperStatus(itemId, lastPrice, lastPrice, STATUS_WON)
     }
 
     fun stop() {
