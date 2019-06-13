@@ -11,7 +11,7 @@ class SniperStateDisplayer(private val ui: MainWindow) : SniperListener {
         showStatus(MainWindow.STATUS_WINNING)
     }
 
-    override fun sniperBidding() {
+    override fun sniperBidding(sniperState: SniperState) {
         showStatus(MainWindow.STATUS_BIDDING)
     }
 

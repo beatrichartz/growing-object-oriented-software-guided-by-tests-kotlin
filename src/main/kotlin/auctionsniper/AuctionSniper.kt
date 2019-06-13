@@ -2,7 +2,9 @@ package auctionsniper
 
 import auctionsniper.AuctionEventListener.PriceSource
 
-class AuctionSniper(private val auction: Auction, private val sniperListener: SniperListener) : AuctionEventListener {
+class AuctionSniper(private val auction: Auction,
+                    private val sniperListener: SniperListener,
+                    private val itemId: String) : AuctionEventListener {
     private var isWinning = false
 
     override fun auctionClosed() {
@@ -19,8 +21,11 @@ class AuctionSniper(private val auction: Auction, private val sniperListener: Sn
         if (isWinning) {
             sniperListener.sniperWinning()
         } else {
-            auction.bid(price + increment)
-            sniperListener.sniperBidding()
+            val bid = price + increment
+            auction.bid(bid)
+            sniperListener.sniperBidding(
+                    SniperState(itemId, price, bid)
+            )
         }
     }
 

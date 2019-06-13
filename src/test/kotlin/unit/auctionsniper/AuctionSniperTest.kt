@@ -4,14 +4,19 @@ import auctionsniper.Auction
 import auctionsniper.AuctionEventListener.PriceSource
 import auctionsniper.AuctionSniper
 import auctionsniper.SniperListener
+import auctionsniper.SniperState
 import org.jmock.junit5.JUnit5Mockery
 import org.junit.jupiter.api.Test
 
 class AuctionSniperTest {
+    companion object {
+        const val ITEM_ID = "item-id"
+    }
+
     private val context = JUnit5Mockery()
     private val sniperListener = context.mock(SniperListener::class.java)
     private val auction = context.mock(Auction::class.java)
-    private val sniper = AuctionSniper(auction, sniperListener)
+    private val sniper = AuctionSniper(auction, sniperListener, ITEM_ID)
     private val sniperState = context.states("sniper")
 
     @Test
@@ -27,7 +32,9 @@ class AuctionSniperTest {
     internal fun reportLostIfAuctionClosesWhenBidding() {
         context.expect {
             ignoring(auction)
-            allowing(sniperListener).sniperBidding()
+            allowing(sniperListener).sniperBidding(
+                    SniperState(ITEM_ID, 123, 168)
+            )
             then(sniperState.`is`("bidding"))
 
             atLeast(1).of(sniperListener).sniperLost()
@@ -57,10 +64,13 @@ class AuctionSniperTest {
     internal fun bidsHigherAndReportsBiddingWhenNewPriceArrives() {
         val price = 1001
         val increment = 25
+        val bid = price + increment
 
         context.expect {
-            oneOf(auction).bid(price + increment)
-            atLeast(1).of(sniperListener).sniperBidding()
+            oneOf(auction).bid(bid)
+            atLeast(1).of(sniperListener).sniperBidding(
+                    SniperState(ITEM_ID, price, bid)
+            )
         }.whenRunning {
             sniper.currentPrice(price, increment, PriceSource.FromOtherBidder)
         }
