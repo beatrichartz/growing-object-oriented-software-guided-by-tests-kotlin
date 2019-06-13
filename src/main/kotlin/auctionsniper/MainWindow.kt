@@ -1,6 +1,5 @@
 package auctionsniper
 
-import auctionsniper.MainWindow.Companion.STATUS_JOINING
 import java.awt.BorderLayout
 import java.awt.Color
 import javax.swing.JFrame
@@ -8,7 +7,6 @@ import javax.swing.JLabel
 import javax.swing.JScrollPane
 import javax.swing.JTable
 import javax.swing.border.LineBorder
-import javax.swing.table.AbstractTableModel
 
 class MainWindow : JFrame(APPLICATION_TITLE) {
     companion object {
@@ -56,24 +54,9 @@ class MainWindow : JFrame(APPLICATION_TITLE) {
     fun showStatus(status: String) {
         snipers.statusText = status
     }
-}
 
-class SnipersTableModel : AbstractTableModel() {
-    var statusText = STATUS_JOINING
-        set(value) {
-            field = value
-            fireTableRowsUpdated(0, 0)
-        }
-
-    override fun getRowCount(): Int {
-        return 1
-    }
-
-    override fun getColumnCount(): Int {
-        return 1
-    }
-
-    override fun getValueAt(rowIndex: Int, columnIndex: Int): String {
-        return statusText
+    fun sniperStatusChanged(sniperState: SniperState, statusText: String) {
+        snipers.sniperStatusChanged(sniperState, statusText)
     }
 }
+
