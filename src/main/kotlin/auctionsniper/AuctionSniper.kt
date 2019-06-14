@@ -6,6 +6,7 @@ class AuctionSniper(private val auction: Auction,
                     private val sniperListener: SniperListener,
                     private val itemId: String) : AuctionEventListener {
     private var isWinning = false
+    private var snapshot = SniperSnapshot.joining(itemId)
 
     override fun auctionClosed() {
         if (isWinning) {
@@ -19,14 +20,14 @@ class AuctionSniper(private val auction: Auction,
         isWinning = priceSource == PriceSource.FromSniper
 
         if (isWinning) {
-            sniperListener.sniperWinning()
+            snapshot = snapshot.winning(price)
         } else {
             val bid = price + increment
             auction.bid(bid)
-            sniperListener.sniperBidding(
-                    SniperState(itemId, price, bid)
-            )
+            snapshot = snapshot.bidding(price, bid)
         }
+
+        sniperListener.sniperStateChanged(snapshot)
     }
 
 }

@@ -1,12 +1,9 @@
 package auctionsniper
 
 import java.awt.BorderLayout
-import java.awt.Color
 import javax.swing.JFrame
-import javax.swing.JLabel
 import javax.swing.JScrollPane
 import javax.swing.JTable
-import javax.swing.border.LineBorder
 
 class MainWindow : JFrame(APPLICATION_TITLE) {
     companion object {
@@ -17,11 +14,9 @@ class MainWindow : JFrame(APPLICATION_TITLE) {
         const val STATUS_LOST = "Lost"
         const val APPLICATION_TITLE = "Auction Sniper"
         const val MAIN_WINDOW_NAME = "Auction Sniper Main"
-        const val SNIPER_STATUS_NAME = "sniper status"
         const val SNIPERS_TABLE_NAME = "Snipers"
     }
 
-    private val sniperStatus = createLabel(STATUS_JOINING)
     private val snipers = SnipersTableModel()
 
     init {
@@ -43,19 +38,12 @@ class MainWindow : JFrame(APPLICATION_TITLE) {
         contentPane.add(JScrollPane(snipersTable), BorderLayout.CENTER)
     }
 
-    private fun createLabel(initialText: String): JLabel {
-        val result = JLabel(initialText)
-        result.name = SNIPER_STATUS_NAME
-        result.border = LineBorder(Color.BLACK)
-        return result
-    }
-
     fun showStatus(status: String) {
-        snipers.statusText = status
+        snipers.state = status
     }
 
-    fun sniperStatusChanged(sniperState: SniperState, statusText: String) {
-        snipers.sniperStatusChanged(sniperState, statusText)
+    fun sniperStateChanged(sniperSnapshot: SniperSnapshot) {
+        snipers.sniperStateChanged(sniperSnapshot)
     }
 }
 

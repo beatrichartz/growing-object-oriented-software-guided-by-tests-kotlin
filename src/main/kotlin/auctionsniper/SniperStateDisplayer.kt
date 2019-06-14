@@ -7,13 +7,9 @@ class SniperStateDisplayer(private val ui: MainWindow) : SniperListener {
         showStatus(MainWindow.STATUS_WON)
     }
 
-    override fun sniperWinning() {
-        showStatus(MainWindow.STATUS_WINNING)
-    }
-
-    override fun sniperBidding(state: SniperState) {
+    override fun sniperStateChanged(snapshot: SniperSnapshot) {
         SwingUtilities.invokeLater {
-            ui.sniperStatusChanged(state, MainWindow.STATUS_BIDDING)
+            ui.sniperStateChanged(snapshot)
         }
     }
 

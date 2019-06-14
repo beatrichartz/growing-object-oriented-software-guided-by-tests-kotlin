@@ -4,7 +4,6 @@ import java.util.*
 
 interface SniperListener : EventListener {
     fun sniperLost()
-    fun sniperBidding(sniperState: SniperState)
-    fun sniperWinning()
+    fun sniperStateChanged(snapshot: SniperSnapshot)
     fun sniperWon()
 }

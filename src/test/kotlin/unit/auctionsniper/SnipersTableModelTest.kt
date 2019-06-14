@@ -1,7 +1,7 @@
 package unit.auctionsniper
 
 import auctionsniper.Column
-import auctionsniper.MainWindow
+import auctionsniper.SniperSnapshot
 import auctionsniper.SniperState
 import auctionsniper.SnipersTableModel
 import org.hamcrest.Matcher
@@ -35,9 +35,8 @@ class SnipersTableModelTest {
         context.expect {
             oneOf(listener).tableChanged(with(aRowChangedEvent()))
         }.whenRunning {
-            model.sniperStatusChanged(
-                    SniperState("item id", 555, 666),
-                    MainWindow.STATUS_BIDDING)
+            model.sniperStateChanged(
+                    SniperSnapshot("item id", 555, 666, SniperState.BIDDING))
         }
 
         assertColumnEquals(Column.ITEM_IDENTIFIER, "item id")

@@ -1,10 +1,10 @@
 package unit.auctionsniper
 
-import auctionsniper.Auction
+import auctionsniper.*
 import auctionsniper.AuctionEventListener.PriceSource
-import auctionsniper.AuctionSniper
-import auctionsniper.SniperListener
-import auctionsniper.SniperState
+import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.FeatureMatcher
+import org.hamcrest.Matcher
 import org.jmock.junit5.JUnit5Mockery
 import org.junit.jupiter.api.Test
 
@@ -32,8 +32,8 @@ class AuctionSniperTest {
     internal fun reportLostIfAuctionClosesWhenBidding() {
         context.expect {
             ignoring(auction)
-            allowing(sniperListener).sniperBidding(
-                    SniperState(ITEM_ID, 123, 168)
+            allowing(sniperListener).sniperStateChanged(
+                    with(aSniperThatIs(SniperState.BIDDING))
             )
             then(sniperState.`is`("bidding"))
 
@@ -49,7 +49,9 @@ class AuctionSniperTest {
     internal fun reportWonIfAuctionClosesWhenWinning() {
         context.expect {
             ignoring(auction)
-            allowing(sniperListener).sniperWinning()
+            allowing(sniperListener).sniperStateChanged(
+                    with(aSniperThatIs(SniperState.WINNING))
+            )
             then(sniperState.`is`("winning"))
 
             atLeast(1).of(sniperListener).sniperWon()
@@ -68,8 +70,8 @@ class AuctionSniperTest {
 
         context.expect {
             oneOf(auction).bid(bid)
-            atLeast(1).of(sniperListener).sniperBidding(
-                    SniperState(ITEM_ID, price, bid)
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    SniperSnapshot(ITEM_ID, price, bid, SniperState.BIDDING)
             )
         }.whenRunning {
             sniper.currentPrice(price, increment, PriceSource.FromOtherBidder)
@@ -79,9 +81,31 @@ class AuctionSniperTest {
     @Test
     internal fun reportIsWinningWhenCurrentPriceComesFromSniper() {
         context.expect {
-            atLeast(1).of(sniperListener).sniperWinning()
+            ignoring(auction)
+            allowing(sniperListener).sniperStateChanged(
+                    with(aSniperThatIs(SniperState.BIDDING))
+            )
+            then(sniperState.`is`("bidding"))
+
+            atLeast(1).of(sniperListener).sniperStateChanged(
+                    SniperSnapshot(ITEM_ID, 135, 135, SniperState.WINNING)
+            )
+            `when`(sniperState.`is`("bidding"))
         }.whenRunning {
-            sniper.currentPrice(123, 45, PriceSource.FromSniper)
+            sniper.currentPrice(123, 12, PriceSource.FromOtherBidder)
+            sniper.currentPrice(135, 45, PriceSource.FromSniper)
         }
     }
+
+    private fun aSniperThatIs(state: SniperState): Matcher<SniperSnapshot> {
+        return object : FeatureMatcher<SniperSnapshot, SniperState>(
+                equalTo(state), "sniper that is ", "was") {
+            override fun featureValueOf(actual: SniperSnapshot): SniperState {
+                return actual.state
+            }
+        }
+    }
+
 }
+
+

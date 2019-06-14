@@ -3,7 +3,7 @@ package auctionsniper
 import javax.swing.table.AbstractTableModel
 
 enum class Column {
-    ITEM_IDENTIFIER, LAST_PRICE, LAST_BID, SNIPER_STATUS;
+    ITEM_IDENTIFIER, LAST_PRICE, LAST_BID, SNIPER_STATE;
 
     companion object {
         fun at(index: Int): Column {
@@ -14,11 +14,15 @@ enum class Column {
 
 class SnipersTableModel : AbstractTableModel() {
     companion object {
-        val STARTING_UP = SniperState("", 0, 0)
+        val STARTING_UP = SniperSnapshot("", 0, 0, SniperState.JOINING)
+        val STATUS_TEXT = arrayOf(
+            MainWindow.STATUS_JOINING,
+            MainWindow.STATUS_BIDDING
+        )
     }
 
-    private var sniperState = STARTING_UP
-    internal var statusText = MainWindow.STATUS_JOINING
+    internal var state = MainWindow.STATUS_JOINING
+    private var snapshot = STARTING_UP
 
     override fun getRowCount(): Int {
         return 1
@@ -30,16 +34,16 @@ class SnipersTableModel : AbstractTableModel() {
 
     override fun getValueAt(rowIndex: Int, columnIndex: Int): Any {
         return when(Column.at(columnIndex)) {
-            Column.ITEM_IDENTIFIER -> sniperState.itemId
-            Column.LAST_PRICE -> sniperState.lastPrice
-            Column.LAST_BID -> sniperState.lastBid
-            Column.SNIPER_STATUS -> statusText
+            Column.ITEM_IDENTIFIER -> snapshot.itemId
+            Column.LAST_PRICE -> snapshot.lastPrice
+            Column.LAST_BID -> snapshot.lastBid
+            Column.SNIPER_STATE -> state
         }
     }
 
-    fun sniperStatusChanged(newSniperState: SniperState, newStatusText: String) {
-        sniperState = newSniperState
-        statusText = newStatusText
+    fun sniperStateChanged(newSnapshot: SniperSnapshot) {
+        snapshot = newSnapshot
+        state = STATUS_TEXT[newSnapshot.state.ordinal]
         fireTableRowsUpdated(0, 0)
     }
 }
