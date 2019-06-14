@@ -4,29 +4,30 @@ import auctionsniper.AuctionEventListener.PriceSource
 
 class AuctionSniper(private val auction: Auction,
                     private val sniperListener: SniperListener,
-                    private val itemId: String) : AuctionEventListener {
-    private var isWinning = false
+                    itemId: String) : AuctionEventListener {
     private var snapshot = SniperSnapshot.joining(itemId)
 
     override fun auctionClosed() {
-        if (isWinning) {
-            sniperListener.sniperWon()
-        } else {
-            sniperListener.sniperLost()
-        }
+        snapshot = snapshot.closed()
+        notifyChange()
     }
 
     override fun currentPrice(price: Int, increment: Int, priceSource: PriceSource) {
-        isWinning = priceSource == PriceSource.FromSniper
+        snapshot = when (priceSource) {
+            PriceSource.FromSniper ->
+                snapshot.winning(price)
+            PriceSource.FromOtherBidder -> {
+                val bid = price + increment
+                auction.bid(bid)
+                snapshot.bidding(price, bid)
+            }
 
-        if (isWinning) {
-            snapshot = snapshot.winning(price)
-        } else {
-            val bid = price + increment
-            auction.bid(bid)
-            snapshot = snapshot.bidding(price, bid)
         }
 
+        notifyChange()
+    }
+
+    private fun notifyChange() {
         sniperListener.sniperStateChanged(snapshot)
     }
 

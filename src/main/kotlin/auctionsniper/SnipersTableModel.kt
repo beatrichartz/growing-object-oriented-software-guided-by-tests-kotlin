@@ -16,12 +16,10 @@ class SnipersTableModel : AbstractTableModel() {
     companion object {
         val STARTING_UP = SniperSnapshot("", 0, 0, SniperState.JOINING)
         val STATUS_TEXT = arrayOf(
-            MainWindow.STATUS_JOINING,
-            MainWindow.STATUS_BIDDING
+                "Joining", "Bidding", "Winning", "Lost", "Won"
         )
     }
 
-    internal var state = MainWindow.STATUS_JOINING
     private var snapshot = STARTING_UP
 
     override fun getRowCount(): Int {
@@ -37,13 +35,16 @@ class SnipersTableModel : AbstractTableModel() {
             Column.ITEM_IDENTIFIER -> snapshot.itemId
             Column.LAST_PRICE -> snapshot.lastPrice
             Column.LAST_BID -> snapshot.lastBid
-            Column.SNIPER_STATE -> state
+            Column.SNIPER_STATE -> textFor(snapshot.state)
         }
+    }
+
+    private fun textFor(state: SniperState): String {
+        return STATUS_TEXT[state.ordinal]
     }
 
     fun sniperStateChanged(newSnapshot: SniperSnapshot) {
         snapshot = newSnapshot
-        state = STATUS_TEXT[newSnapshot.state.ordinal]
         fireTableRowsUpdated(0, 0)
     }
 }

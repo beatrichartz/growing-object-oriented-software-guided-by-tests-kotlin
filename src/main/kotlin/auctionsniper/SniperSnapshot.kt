@@ -1,7 +1,26 @@
 package auctionsniper
 
 enum class SniperState {
-    JOINING, BIDDING, WINNING, LOST, WON
+    JOINING {
+        override fun whenAuctionClosed(): SniperState {
+            return LOST
+        }
+    },
+    BIDDING {
+        override fun whenAuctionClosed(): SniperState {
+            return LOST
+        }
+    },
+    WINNING {
+        override fun whenAuctionClosed(): SniperState {
+            return WON
+        }
+    },
+    LOST, WON;
+
+    open fun whenAuctionClosed(): SniperState {
+        throw IllegalStateException("Auction is already closed")
+    }
 }
 
 class SniperSnapshot(internal val itemId: String,
@@ -21,6 +40,10 @@ class SniperSnapshot(internal val itemId: String,
 
     fun bidding(newLastPrice: Int, newLastBid: Int): SniperSnapshot {
         return SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING)
+    }
+
+    fun closed(): SniperSnapshot {
+        return SniperSnapshot(itemId, lastPrice, lastBid, state.whenAuctionClosed())
     }
 
     override fun equals(other: Any?): Boolean {
@@ -46,4 +69,5 @@ class SniperSnapshot(internal val itemId: String,
     override fun toString(): String {
         return "SniperSnapshot(itemId='$itemId', lastPrice=$lastPrice, lastBid=$lastBid)"
     }
+
 }

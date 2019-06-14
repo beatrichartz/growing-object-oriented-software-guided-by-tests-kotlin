@@ -17,8 +17,8 @@ internal class NonNullExpectations : Expectations() {
         with(matcher)
         return nullObject
     }
-
 }
+
 internal fun JUnit5Mockery.expect(expectations: NonNullExpectations.() -> Unit) = RunClause(this, expectations)
 
 internal class RunClause(private val mockery: JUnit5Mockery, private val expectations: NonNullExpectations.() -> Unit) {

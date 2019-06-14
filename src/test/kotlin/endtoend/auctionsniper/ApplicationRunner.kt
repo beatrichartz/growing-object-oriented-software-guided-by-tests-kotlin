@@ -1,11 +1,6 @@
 package endtoend.auctionsniper
 
 import auctionsniper.Main
-import auctionsniper.MainWindow.Companion.STATUS_BIDDING
-import auctionsniper.MainWindow.Companion.STATUS_JOINING
-import auctionsniper.MainWindow.Companion.STATUS_LOST
-import auctionsniper.MainWindow.Companion.STATUS_WINNING
-import auctionsniper.MainWindow.Companion.STATUS_WON
 import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 
@@ -33,23 +28,23 @@ class ApplicationRunner {
         thread.start()
 
         driver = AuctionSniperDriver(1000)
-        driver.showsSniperStatus(STATUS_JOINING)
+        driver.showsSniperStatus("Joining")
     }
 
     fun hasShownSniperIsBidding(lastPrice: Int, lastBid: Int) {
-        driver.showsSniperStatus(itemId, lastPrice, lastBid, STATUS_BIDDING)
+        driver.showsSniperStatus(itemId, lastPrice, lastBid, "Bidding")
     }
 
     fun hasShownSniperisWinning(winningBid: Int) {
-        driver.showsSniperStatus(itemId, winningBid, winningBid, STATUS_WINNING)
+        driver.showsSniperStatus(itemId, winningBid, winningBid, "Winning")
     }
 
     fun showsSniperHasLostAuction() {
-        driver.showsSniperStatus(STATUS_LOST)
+        driver.showsSniperStatus("Lost")
     }
 
     fun showsSniperHasWonAuction(lastPrice: Int) {
-        driver.showsSniperStatus(itemId, lastPrice, lastPrice, STATUS_WON)
+        driver.showsSniperStatus(itemId, lastPrice, lastPrice, "Won")
     }
 
     fun stop() {
