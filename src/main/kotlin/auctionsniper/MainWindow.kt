@@ -46,5 +46,8 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
         contentPane.add(controls, BorderLayout.NORTH)
         contentPane.add(JScrollPane(snipersTable), BorderLayout.CENTER)
     }
+
+    fun addUserRequestListener(userRequestListener: UserRequestListener) {
+    }
 }
 

@@ -6,6 +6,7 @@ import auctionsniper.SniperState.*
 import auctionsniper.SnipersTableModel.Companion.textFor
 import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
+import support.auctionsniper.AuctionSniperDriver
 
 class ApplicationRunner {
     companion object {

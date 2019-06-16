@@ -1,4 +1,4 @@
-package endtoend.auctionsniper
+package support.auctionsniper
 
 import auctionsniper.MainWindow
 import com.objogate.wl.swing.AWTEventQueueProber
