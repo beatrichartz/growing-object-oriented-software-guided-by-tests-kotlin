@@ -7,6 +7,8 @@ import javax.swing.JTable
 
 class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TITLE) {
     companion object {
+        const val NEW_ITEM_ID_NAME = "item id"
+        const val JOIN_BUTTON_NAME = "join"
         const val APPLICATION_TITLE = "Auction Sniper"
         const val MAIN_WINDOW_NAME = "Auction Sniper Main"
         const val SNIPERS_TABLE_NAME = "Snipers"

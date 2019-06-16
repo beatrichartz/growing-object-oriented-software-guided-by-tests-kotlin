@@ -32,6 +32,11 @@ class ApplicationRunner {
         driver = AuctionSniperDriver(1000)
         driver.hasTitle(MainWindow.APPLICATION_TITLE)
         driver.hasColumnTitles()
+        for (auction in auctions) {
+            val itemId = auction.itemId
+            driver.startBiddingFor(itemId)
+            driver.showsSniperStatus(itemId, textFor(JOINING))
+        }
     }
 
     fun hasShownSniperIsBidding(auction: FakeAuctionServer, lastPrice: Int, lastBid: Int) {

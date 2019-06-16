@@ -2,14 +2,13 @@ package endtoend.auctionsniper
 
 import auctionsniper.MainWindow
 import com.objogate.wl.swing.AWTEventQueueProber
-import com.objogate.wl.swing.driver.ComponentDriver
-import com.objogate.wl.swing.driver.JFrameDriver
-import com.objogate.wl.swing.driver.JTableDriver
-import com.objogate.wl.swing.driver.JTableHeaderDriver
+import com.objogate.wl.swing.driver.*
 import com.objogate.wl.swing.gesture.GesturePerformer
 import com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching
 import com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText
 import org.hamcrest.CoreMatchers.any
+import javax.swing.JButton
+import javax.swing.JTextField
 import javax.swing.table.JTableHeader
 
 class AuctionSniperDriver(timeoutMillis: Long): JFrameDriver(
@@ -33,5 +32,20 @@ class AuctionSniperDriver(timeoutMillis: Long): JFrameDriver(
         val headers = JTableHeaderDriver(this, JTableHeader::class.java)
         headers.hasHeaders(matching(withLabelText("Item"), withLabelText("Last Price"),
                 withLabelText("Last Bid"), withLabelText("State")))
+    }
+
+    fun startBiddingFor(itemId: String) {
+        itemIdField().replaceAllText(itemId)
+        bidButton().click()
+    }
+
+    private fun bidButton(): JButtonDriver {
+        return JButtonDriver(this, JButton::class.java, named(MainWindow.JOIN_BUTTON_NAME))
+    }
+
+    private fun itemIdField(): JTextFieldDriver {
+        val newItemId = JTextFieldDriver(this, JTextField::class.java, named(MainWindow.NEW_ITEM_ID_NAME))
+        newItemId.focusWithMouse()
+        return newItemId
     }
 }
