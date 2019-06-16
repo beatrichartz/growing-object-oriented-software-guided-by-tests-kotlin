@@ -35,7 +35,13 @@ class AuctionSniperDriver(timeoutMillis: Long): JFrameDriver(
     }
 
     fun startBiddingFor(itemId: String) {
-        itemIdField().replaceAllText(itemId)
+        val itemIdField = itemIdField()
+        repeat(3) {
+            itemIdField.leftClickOnComponent()
+        }
+        itemIdField.typeText(itemId)
+        itemIdField.hasText(itemId)
+
         bidButton().click()
     }
 
@@ -44,8 +50,6 @@ class AuctionSniperDriver(timeoutMillis: Long): JFrameDriver(
     }
 
     private fun itemIdField(): JTextFieldDriver {
-        val newItemId = JTextFieldDriver(this, JTextField::class.java, named(MainWindow.NEW_ITEM_ID_NAME))
-        newItemId.focusWithMouse()
-        return newItemId
+        return JTextFieldDriver(this, JTextField::class.java, named(MainWindow.NEW_ITEM_ID_NAME))
     }
 }

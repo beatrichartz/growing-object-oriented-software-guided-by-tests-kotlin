@@ -21,9 +21,6 @@ class Main {
 
             val connection = connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD])
             main.disconnectWhenUICloses(connection)
-            for (itemId in args.slice(AUCTION_ITEMS_ARGS_START_INDEX until args.size)) {
-                main.joinAuction(connection, itemId)
-            }
         }
 
         private fun connection(hostname: String, username: String, password: String): XMPPConnection {

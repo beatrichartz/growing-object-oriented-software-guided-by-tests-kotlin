@@ -1,9 +1,8 @@
 package auctionsniper
 
 import java.awt.BorderLayout
-import javax.swing.JFrame
-import javax.swing.JScrollPane
-import javax.swing.JTable
+import java.awt.FlowLayout
+import javax.swing.*
 
 class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TITLE) {
     companion object {
@@ -16,10 +15,24 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
 
     init {
         name = MAIN_WINDOW_NAME
-        fillContentPane(makeSnipersTable())
+        fillContentPane(makeSnipersTable(), makeControls())
         pack()
         defaultCloseOperation = EXIT_ON_CLOSE
         isVisible = true
+    }
+
+    private fun makeControls(): JPanel {
+        val controls = JPanel(FlowLayout())
+        val itemIdField = JTextField()
+        itemIdField.columns = 25
+        itemIdField.name = NEW_ITEM_ID_NAME
+        controls.add(itemIdField)
+
+        val joinAuctionButton = JButton("Join Auction")
+        joinAuctionButton.name = JOIN_BUTTON_NAME
+        controls.add(joinAuctionButton)
+
+        return controls
     }
 
     private fun makeSnipersTable(): JTable {
@@ -28,8 +41,9 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
         return snipersTable
     }
 
-    private fun fillContentPane(snipersTable: JTable) {
+    private fun fillContentPane(snipersTable: JTable, controls: JPanel) {
         contentPane.layout = BorderLayout()
+        contentPane.add(controls, BorderLayout.NORTH)
         contentPane.add(JScrollPane(snipersTable), BorderLayout.CENTER)
     }
 }
