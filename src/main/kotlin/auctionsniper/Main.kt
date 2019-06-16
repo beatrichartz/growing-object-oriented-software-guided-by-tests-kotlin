@@ -10,7 +10,7 @@ class Main {
         private const val ARG_HOSTNAME = 0
         private const val ARG_USERNAME = 1
         private const val ARG_PASSWORD = 2
-        private const val ARG_ITEM_ID = 3
+        private const val AUCTION_ITEMS_ARGS_START_INDEX = 3
 
         private const val AUCTION_RESOURCE = "Auction"
         private const val ITEM_ID_AS_LOGIN = "auction-%s"
@@ -19,8 +19,11 @@ class Main {
         fun main(vararg args: String) {
             val main = Main()
 
-            main.joinAuction(connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD]),
-                    args[ARG_ITEM_ID])
+            val connection = connection(args[ARG_HOSTNAME], args[ARG_USERNAME], args[ARG_PASSWORD])
+            main.disconnectWhenUICloses(connection)
+            for (itemId in args.slice(AUCTION_ITEMS_ARGS_START_INDEX until args.size)) {
+                main.joinAuction(connection, itemId)
+            }
         }
 
         private fun connection(hostname: String, username: String, password: String): XMPPConnection {
