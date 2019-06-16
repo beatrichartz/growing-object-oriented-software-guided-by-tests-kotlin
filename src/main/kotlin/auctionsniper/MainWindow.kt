@@ -1,5 +1,6 @@
 package auctionsniper
 
+import eventhandling.Announcer
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import javax.swing.*
@@ -12,6 +13,8 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
         const val MAIN_WINDOW_NAME = "Auction Sniper Main"
         const val SNIPERS_TABLE_NAME = "Snipers"
     }
+
+    private val userRequests = Announcer.toListenerType(UserRequestListener::class.java)
 
     init {
         name = MAIN_WINDOW_NAME
@@ -30,6 +33,9 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
 
         val joinAuctionButton = JButton("Join Auction")
         joinAuctionButton.name = JOIN_BUTTON_NAME
+        joinAuctionButton.addActionListener {
+            userRequests.announce().joinAuction(itemIdField.text)
+        }
         controls.add(joinAuctionButton)
 
         return controls
@@ -48,6 +54,7 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
     }
 
     fun addUserRequestListener(userRequestListener: UserRequestListener) {
+        userRequests.addListener(userRequestListener)
     }
 }
 

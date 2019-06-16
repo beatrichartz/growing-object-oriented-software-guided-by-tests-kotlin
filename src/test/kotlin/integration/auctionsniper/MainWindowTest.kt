@@ -5,6 +5,7 @@ import auctionsniper.SnipersTableModel
 import auctionsniper.UserRequestListener
 import com.objogate.wl.swing.probe.ValueMatcherProbe
 import org.hamcrest.Matchers.equalTo
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import support.auctionsniper.AuctionSniperDriver
 
@@ -19,7 +20,6 @@ class MainWindowTest {
     internal fun makesUserRequestWhenJoinButtonClicked() {
         val buttonProbe = ValueMatcherProbe<String>(equalTo("an item id"), "join request")
 
-
         mainWindow.addUserRequestListener(object : UserRequestListener {
             override fun joinAuction(itemId: String) {
                 buttonProbe.setReceivedValue(itemId)
@@ -28,5 +28,10 @@ class MainWindowTest {
 
         driver.startBiddingFor("an item id")
         driver.check(buttonProbe)
+    }
+
+    @AfterEach
+    internal fun tearDown() {
+        driver.dispose()
     }
 }

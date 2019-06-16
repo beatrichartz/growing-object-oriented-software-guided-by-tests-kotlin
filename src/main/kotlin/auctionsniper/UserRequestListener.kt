@@ -1,5 +1,7 @@
 package auctionsniper
 
-interface UserRequestListener {
+import java.util.*
+
+interface UserRequestListener: EventListener {
     fun joinAuction(itemId: String)
 }
