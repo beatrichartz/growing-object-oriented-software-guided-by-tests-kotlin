@@ -17,7 +17,7 @@ class AuctionSniperTest {
     private val context = JUnit5Mockery()
     private val sniperListener = context.mock(SniperListener::class.java)
     private val auction = context.mock(Auction::class.java)
-    private val sniper = AuctionSniper(auction, sniperListener, ITEM_ID)
+    private val sniper = AuctionSniper(ITEM_ID, auction, sniperListener)
     private val sniperState = context.states("sniper")
 
     @Test

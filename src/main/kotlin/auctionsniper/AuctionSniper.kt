@@ -2,9 +2,9 @@ package auctionsniper
 
 import auctionsniper.AuctionEventListener.PriceSource
 
-class AuctionSniper(private val auction: Auction,
-                    private val sniperListener: SniperListener,
-                    itemId: String) : AuctionEventListener {
+class AuctionSniper(itemId: String,
+                    private val auction: Auction,
+                    private val sniperListener: SniperListener) : AuctionEventListener {
     private var snapshot = SniperSnapshot.joining(itemId)
 
     override fun auctionClosed() {
