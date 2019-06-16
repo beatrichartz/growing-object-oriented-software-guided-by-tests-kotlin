@@ -2,6 +2,8 @@ package endtoend.auctionsniper
 
 import auctionsniper.Main
 import auctionsniper.MainWindow
+import auctionsniper.SniperState.*
+import auctionsniper.SnipersTableModel.Companion.textFor
 import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 
@@ -12,14 +14,13 @@ class ApplicationRunner {
         const val SNIPER_XMPP_ID = "$SNIPER_ID@$XMPP_HOSTNAME/$AUCTION_RESOURCE"
     }
 
-    private lateinit var itemId: String
     private lateinit var driver: AuctionSniperDriver
 
-    fun startBiddingIn(auction: FakeAuctionServer) {
-        itemId = auction.itemId
+    fun startBiddingIn(vararg auctions: FakeAuctionServer) {
         val thread = Thread {
             try {
-                Main.main(XMPP_HOSTNAME, SNIPER_ID, SNIPER_PASSWORD, auction.itemId)
+                Main.main(XMPP_HOSTNAME, SNIPER_ID, SNIPER_PASSWORD,
+                        *auctions.map { it.itemId }.toTypedArray())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -31,23 +32,22 @@ class ApplicationRunner {
         driver = AuctionSniperDriver(1000)
         driver.hasTitle(MainWindow.APPLICATION_TITLE)
         driver.hasColumnTitles()
-        driver.showsSniperStatus("Joining")
     }
 
-    fun hasShownSniperIsBidding(lastPrice: Int, lastBid: Int) {
-        driver.showsSniperStatus(itemId, lastPrice, lastBid, "Bidding")
+    fun hasShownSniperIsBidding(auction: FakeAuctionServer, lastPrice: Int, lastBid: Int) {
+        driver.showsSniperStatus(auction.itemId, lastPrice, lastBid, textFor(BIDDING))
     }
 
-    fun hasShownSniperisWinning(winningBid: Int) {
-        driver.showsSniperStatus(itemId, winningBid, winningBid, "Winning")
+    fun hasShownSniperisWinning(auction: FakeAuctionServer, winningBid: Int) {
+        driver.showsSniperStatus(auction.itemId, winningBid, winningBid, textFor(WINNING))
     }
 
-    fun showsSniperHasLostAuction() {
-        driver.showsSniperStatus("Lost")
+    fun showsSniperHasLostAuction(auction: FakeAuctionServer) {
+        driver.showsSniperStatus(auction.itemId, textFor(LOST))
     }
 
-    fun showsSniperHasWonAuction(lastPrice: Int) {
-        driver.showsSniperStatus(itemId, lastPrice, lastPrice, "Won")
+    fun showsSniperHasWonAuction(auction: FakeAuctionServer, lastPrice: Int) {
+        driver.showsSniperStatus(auction.itemId, lastPrice, lastPrice, textFor(WON))
     }
 
     fun stop() {

@@ -1,10 +1,10 @@
 package endtoend.auctionsniper
 
 import auctionsniper.SOLProtocol
-import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.hasProperty
 import org.jivesoftware.smack.Chat
 import org.jivesoftware.smack.MessageListener
 import org.jivesoftware.smack.XMPPConnection
@@ -76,7 +76,6 @@ class SingleMessageListener(
 
     fun receivesAMessage(matcher: Matcher<String>) {
         val message = messages.poll(10, TimeUnit.SECONDS)
-        MatcherAssert.assertThat("Message", message, notNullValue())
-        MatcherAssert.assertThat(message.body, matcher)
+        MatcherAssert.assertThat(message, hasProperty("body", matcher))
     }
 }

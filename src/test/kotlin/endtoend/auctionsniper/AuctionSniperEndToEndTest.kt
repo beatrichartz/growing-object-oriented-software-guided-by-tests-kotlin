@@ -19,21 +19,52 @@ class AuctionSniperEndToEndTest {
     }
 
     @Test
+    internal fun sniperBidsForMultipleItems() {
+        val auction2 = FakeAuctionServer("item-65432")
+
+        auction.startSellingItem()
+        auction2.startSellingItem()
+
+        application.startBiddingIn(auction, auction2)
+
+        auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
+        auction2.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
+
+        auction.reportPrice(1000, 98, "other bidder")
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID)
+
+        auction2.reportPrice(500, 21, "other bidder")
+        auction2.hasReceivedBid(521, ApplicationRunner.SNIPER_XMPP_ID)
+
+        auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID)
+        auction2.reportPrice(521, 22, ApplicationRunner.SNIPER_XMPP_ID)
+
+        application.hasShownSniperisWinning(auction, 1098)
+        application.hasShownSniperisWinning(auction2, 521)
+
+        auction.announceClosed()
+        auction2.announceClosed()
+
+        application.showsSniperHasWonAuction(auction, 1098)
+        application.showsSniperHasWonAuction(auction2, 521)
+    }
+
+    @Test
     internal fun sniperWinsAnAuctionByBiddingHigher() {
         auction.startSellingItem()
         application.startBiddingIn(auction)
         auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
 
         auction.reportPrice(1000, 98, "other bidder")
-        application.hasShownSniperIsBidding(1000, 1098)
+        application.hasShownSniperIsBidding(auction, 1000, 1098)
 
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID)
 
         auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_XMPP_ID)
-        application.hasShownSniperisWinning(1098)
+        application.hasShownSniperisWinning(auction, 1098)
 
         auction.announceClosed()
-        application.showsSniperHasWonAuction(1098)
+        application.showsSniperHasWonAuction(auction, 1098)
     }
 
     @Test
@@ -43,12 +74,12 @@ class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
 
         auction.reportPrice(1000, 98, "other bidder")
-        application.hasShownSniperIsBidding(1000, 1098)
+        application.hasShownSniperIsBidding(auction, 1000, 1098)
 
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID)
 
         auction.announceClosed()
-        application.showsSniperHasLostAuction()
+        application.showsSniperHasLostAuction(auction)
     }
 
     @AfterEach

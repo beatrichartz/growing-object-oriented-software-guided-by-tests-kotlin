@@ -9,7 +9,7 @@ import com.objogate.wl.swing.driver.JTableHeaderDriver
 import com.objogate.wl.swing.gesture.GesturePerformer
 import com.objogate.wl.swing.matcher.IterableComponentsMatcher.matching
 import com.objogate.wl.swing.matcher.JLabelTextMatcher.withLabelText
-import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.any
 import javax.swing.table.JTableHeader
 
 class AuctionSniperDriver(timeoutMillis: Long): JFrameDriver(
@@ -17,8 +17,10 @@ class AuctionSniperDriver(timeoutMillis: Long): JFrameDriver(
         JFrameDriver.topLevelFrame(named(MainWindow.MAIN_WINDOW_NAME), ComponentDriver.showingOnScreen()),
         AWTEventQueueProber(timeoutMillis, 100)
 ) {
-    fun showsSniperStatus(statusText: String) {
-        JTableDriver(this).hasCell(withLabelText(equalTo(statusText)))
+    fun showsSniperStatus(itemId: String, statusText: String) {
+        JTableDriver(this).hasRow(
+                matching(withLabelText(itemId), withLabelText(any(String::class.java)),
+                        withLabelText(any(String::class.java)), withLabelText(statusText)))
     }
 
     fun showsSniperStatus(itemId: String, lastPrice: Int, lastBid: Int, statusText: String) {
