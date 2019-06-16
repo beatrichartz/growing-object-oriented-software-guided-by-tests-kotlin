@@ -31,6 +31,13 @@ class SnipersTableModelTest {
     }
 
     @Test
+    internal fun setsUpColumnHeadings() {
+        for (column in Column.values()) {
+            assertEquals(column.title, model.getColumnName(column.ordinal))
+        }
+    }
+
+    @Test
     internal fun setsSniperValuesInColumns() {
         context.expect {
             oneOf(listener).tableChanged(with(aRowChangedEvent()))
