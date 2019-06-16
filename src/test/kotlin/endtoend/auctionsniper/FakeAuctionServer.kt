@@ -1,7 +1,7 @@
 package endtoend.auctionsniper
 
 import auctionsniper.SOLProtocol
-import org.hamcrest.CoreMatchers
+import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers
@@ -24,7 +24,7 @@ class FakeAuctionServer(internal val itemId: String) {
 
     private val connection: XMPPConnection
     private val messageListener: SingleMessageListener = SingleMessageListener()
-    private var currentChat: Chat? = null
+    private lateinit var currentChat: Chat
 
     init {
         connection = XMPPConnection(XMPP_HOSTNAME)
@@ -44,7 +44,7 @@ class FakeAuctionServer(internal val itemId: String) {
     }
 
     fun announceClosed() {
-        currentChat?.sendMessage(SOLProtocol.closeEvent())
+        currentChat.sendMessage(SOLProtocol.closeEvent())
     }
 
     fun stop() {
@@ -52,7 +52,7 @@ class FakeAuctionServer(internal val itemId: String) {
     }
 
     fun reportPrice(price: Int, increment: Int, bidder: String) {
-        currentChat?.sendMessage(SOLProtocol.priceEvent(price, increment, bidder))
+        currentChat.sendMessage(SOLProtocol.priceEvent(price, increment, bidder))
     }
 
     fun hasReceivedBid(bid: Int, sniperId: String) {
@@ -61,7 +61,7 @@ class FakeAuctionServer(internal val itemId: String) {
 
     private fun receivesAMessageMatching(sniperId: String, matcher: Matcher<String>) {
         messageListener.receivesAMessage(matcher)
-        Assert.assertThat(currentChat?.participant, Matchers.equalTo(sniperId))
+        Assert.assertThat(currentChat.participant, Matchers.equalTo(sniperId))
     }
 }
 
@@ -76,7 +76,7 @@ class SingleMessageListener(
 
     fun receivesAMessage(matcher: Matcher<String>) {
         val message = messages.poll(10, TimeUnit.SECONDS)
-        MatcherAssert.assertThat("Message", message, CoreMatchers.notNullValue())
+        MatcherAssert.assertThat("Message", message, notNullValue())
         MatcherAssert.assertThat(message.body, matcher)
     }
 }
