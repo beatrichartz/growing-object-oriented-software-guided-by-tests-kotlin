@@ -38,7 +38,7 @@ class ApplicationRunner {
         driver.showsSniperStatus(auction.itemId, lastPrice, lastBid, textFor(BIDDING))
     }
 
-    fun hasShownSniperisWinning(auction: FakeAuctionServer, winningBid: Int) {
+    fun hasShownSniperIsWinning(auction: FakeAuctionServer, winningBid: Int) {
         driver.showsSniperStatus(auction.itemId, winningBid, winningBid, textFor(WINNING))
     }
 

@@ -8,16 +8,20 @@ class SnipersTableModel : AbstractTableModel(), SniperListener {
             return STATUS_TEXT[state.ordinal]
         }
 
-        private val STARTING_UP = SniperSnapshot("", 0, 0, SniperState.JOINING)
         private val STATUS_TEXT = arrayOf(
                 "Joining", "Bidding", "Winning", "Lost", "Won"
         )
     }
 
-    private var snapshot = STARTING_UP
+    private val snapshots: ArrayList<SniperSnapshot> = arrayListOf()
+    fun addSniper(snapshot: SniperSnapshot) {
+        snapshots.add(snapshot)
+        val rowIndex = snapshots.size - 1
+        fireTableRowsInserted(rowIndex, rowIndex)
+    }
 
     override fun getRowCount(): Int {
-        return 1
+        return snapshots.size
     }
 
     override fun getColumnCount(): Int {
@@ -29,11 +33,14 @@ class SnipersTableModel : AbstractTableModel(), SniperListener {
     }
 
     override fun getValueAt(rowIndex: Int, columnIndex: Int): Any {
-        return Column.at(columnIndex).valueIn(snapshot)
+        return Column.at(columnIndex).valueIn(snapshots[rowIndex])
     }
 
     override fun sniperStateChanged(snapshot: SniperSnapshot) {
-        this.snapshot = snapshot
-        fireTableRowsUpdated(0, 0)
+        val row = snapshots.indexOfFirst { snapshot.itemId == it.itemId }
+        if (row < 0) throw IllegalArgumentException("Sniper for ${snapshot.itemId} is not registered")
+
+        snapshots[row] = snapshot
+        fireTableRowsUpdated(row, row)
     }
 }
