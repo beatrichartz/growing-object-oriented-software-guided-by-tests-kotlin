@@ -2,13 +2,13 @@ package auctionsniper
 
 import javax.swing.table.AbstractTableModel
 
-class SnipersTableModel : AbstractTableModel() {
+class SnipersTableModel : AbstractTableModel(), SniperListener {
     companion object {
         fun textFor(state: SniperState): String {
             return STATUS_TEXT[state.ordinal]
         }
 
-        val STARTING_UP = SniperSnapshot("", 0, 0, SniperState.JOINING)
+        private val STARTING_UP = SniperSnapshot("", 0, 0, SniperState.JOINING)
         private val STATUS_TEXT = arrayOf(
                 "Joining", "Bidding", "Winning", "Lost", "Won"
         )
@@ -28,8 +28,8 @@ class SnipersTableModel : AbstractTableModel() {
         return Column.at(columnIndex).valueIn(snapshot)
     }
 
-    fun sniperStateChanged(newSnapshot: SniperSnapshot) {
-        snapshot = newSnapshot
+    override fun sniperStateChanged(snapshot: SniperSnapshot) {
+        this.snapshot = snapshot
         fireTableRowsUpdated(0, 0)
     }
 }

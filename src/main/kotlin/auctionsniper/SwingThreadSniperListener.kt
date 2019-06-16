@@ -2,10 +2,10 @@ package auctionsniper
 
 import javax.swing.SwingUtilities
 
-class SniperStateDisplayer(private val ui: MainWindow) : SniperListener {
+class SwingThreadSniperListener(private val sniperListener: SniperListener) : SniperListener {
     override fun sniperStateChanged(snapshot: SniperSnapshot) {
         SwingUtilities.invokeLater {
-            ui.sniperStateChanged(snapshot)
+            sniperListener.sniperStateChanged(snapshot)
         }
     }
 }

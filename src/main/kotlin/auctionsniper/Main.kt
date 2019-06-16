@@ -36,6 +36,7 @@ class Main {
         }
     }
 
+    private val snipers = SnipersTableModel()
     private lateinit var ui: MainWindow
 
     init {
@@ -49,7 +50,7 @@ class Main {
         val auction = XMPPAuction(chat)
 
         chat.addMessageListener(AuctionMessageTranslator(
-                connection.user, AuctionSniper(auction, SniperStateDisplayer(ui), itemId)))
+                connection.user, AuctionSniper(auction, SwingThreadSniperListener(snipers), itemId)))
         auction.join()
     }
 
@@ -63,7 +64,7 @@ class Main {
 
     private fun startUserInterface() {
         SwingUtilities.invokeAndWait {
-            ui = MainWindow()
+            ui = MainWindow(snipers)
         }
     }
 }
