@@ -56,7 +56,7 @@ class SnipersTableModelTest {
         assertEquals(expected, model.getValueAt(rowIndex, columnIndex))
     }
 
-    private fun aRowChangedEvent(): Matcher<TableModelEvent>? {
+    private fun aRowChangedEvent(): Matcher<TableModelEvent> {
         return samePropertyValuesAs(TableModelEvent(model, 0))
     }
 }

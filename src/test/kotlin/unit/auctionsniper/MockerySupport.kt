@@ -13,7 +13,7 @@ internal class NonNullExpectations : Expectations() {
         return nullSniperSnapshot
     }
 
-    internal fun <T : Any> with(matcher: Matcher<T>, nullObject: T): T {
+    private fun <T : Any> with(matcher: Matcher<T>, nullObject: T): T {
         with(matcher)
         return nullObject
     }

@@ -24,6 +24,10 @@ class SnipersTableModel : AbstractTableModel(), SniperListener {
         return Column.values().size
     }
 
+    override fun getColumnName(column: Int): String {
+        return Column.at(column).title
+    }
+
     override fun getValueAt(rowIndex: Int, columnIndex: Int): Any {
         return Column.at(columnIndex).valueIn(snapshot)
     }
