@@ -1,6 +1,7 @@
 package endtoend.auctionsniper
 
 import auctionsniper.Main
+import auctionsniper.MainWindow
 import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 
@@ -28,6 +29,8 @@ class ApplicationRunner {
         thread.start()
 
         driver = AuctionSniperDriver(1000)
+        driver.hasTitle(MainWindow.APPLICATION_TITLE)
+        driver.hasColumnTitles()
         driver.showsSniperStatus("Joining")
     }
 
