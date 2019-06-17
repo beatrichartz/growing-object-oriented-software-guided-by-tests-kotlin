@@ -1,5 +1,8 @@
-package auctionsniper
+package auctionsniper.ui
 
+import auctionsniper.SniperListener
+import auctionsniper.SniperSnapshot
+import auctionsniper.SniperState
 import javax.swing.table.AbstractTableModel
 
 class SnipersTableModel : AbstractTableModel(), SniperListener {

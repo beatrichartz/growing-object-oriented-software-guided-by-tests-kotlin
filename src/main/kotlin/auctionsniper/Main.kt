@@ -1,5 +1,8 @@
 package auctionsniper
 
+import auctionsniper.ui.MainWindow
+import auctionsniper.ui.SnipersTableModel
+import auctionsniper.ui.SwingThreadSniperListener
 import org.jivesoftware.smack.XMPPConnection
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent

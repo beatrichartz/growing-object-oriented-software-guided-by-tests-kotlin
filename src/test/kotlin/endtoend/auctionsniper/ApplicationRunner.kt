@@ -1,9 +1,9 @@
 package endtoend.auctionsniper
 
 import auctionsniper.Main
-import auctionsniper.MainWindow
+import auctionsniper.ui.MainWindow
 import auctionsniper.SniperState.*
-import auctionsniper.SnipersTableModel.Companion.textFor
+import auctionsniper.ui.SnipersTableModel.Companion.textFor
 import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
 import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 import support.auctionsniper.AuctionSniperDriver

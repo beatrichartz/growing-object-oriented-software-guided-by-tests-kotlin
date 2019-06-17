@@ -1,8 +1,8 @@
-package unit.auctionsniper
+package unit.auctionsniper.ui
 
-import auctionsniper.Column
 import auctionsniper.SniperSnapshot
 import auctionsniper.SniperState
+import auctionsniper.ui.Column
 import junit.framework.TestCase.assertEquals
 import org.junit.jupiter.api.Test
 

@@ -1,4 +1,6 @@
-package auctionsniper
+package auctionsniper.ui
+
+import auctionsniper.SniperSnapshot
 
 enum class Column(val title: String) {
     ITEM_IDENTIFIER("Item") {

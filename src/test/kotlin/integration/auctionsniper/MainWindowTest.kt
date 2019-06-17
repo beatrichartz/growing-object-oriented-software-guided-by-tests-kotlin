@@ -1,7 +1,7 @@
 package integration.auctionsniper
 
-import auctionsniper.MainWindow
-import auctionsniper.SnipersTableModel
+import auctionsniper.ui.MainWindow
+import auctionsniper.ui.SnipersTableModel
 import auctionsniper.UserRequestListener
 import com.objogate.wl.swing.probe.ValueMatcherProbe
 import org.hamcrest.Matchers.equalTo

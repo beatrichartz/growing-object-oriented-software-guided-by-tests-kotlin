@@ -1,5 +1,6 @@
-package auctionsniper
+package auctionsniper.ui
 
+import auctionsniper.UserRequestListener
 import eventhandling.Announcer
 import java.awt.BorderLayout
 import java.awt.FlowLayout

@@ -1,6 +1,6 @@
 package support.auctionsniper
 
-import auctionsniper.MainWindow
+import auctionsniper.ui.MainWindow
 import com.objogate.wl.swing.AWTEventQueueProber
 import com.objogate.wl.swing.driver.*
 import com.objogate.wl.swing.gesture.GesturePerformer

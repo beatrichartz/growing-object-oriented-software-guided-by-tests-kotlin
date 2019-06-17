@@ -1,10 +1,10 @@
-package unit.auctionsniper
+package unit.auctionsniper.ui
 
-import auctionsniper.Column
+import auctionsniper.ui.Column
 import auctionsniper.SniperSnapshot
 import auctionsniper.SniperState
-import auctionsniper.SnipersTableModel
-import auctionsniper.SnipersTableModel.Companion.textFor
+import auctionsniper.ui.SnipersTableModel
+import auctionsniper.ui.SnipersTableModel.Companion.textFor
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
 import org.jmock.junit5.JUnit5Mockery
@@ -13,6 +13,7 @@ import org.junit.Assert.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import unit.auctionsniper.expect
 import javax.swing.event.TableModelEvent
 import javax.swing.event.TableModelListener
 
