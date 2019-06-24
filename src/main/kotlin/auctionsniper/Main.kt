@@ -13,7 +13,6 @@ class Main {
         private const val ARG_HOSTNAME = 0
         private const val ARG_USERNAME = 1
         private const val ARG_PASSWORD = 2
-        private const val AUCTION_ITEMS_ARGS_START_INDEX = 3
 
         private const val AUCTION_RESOURCE = "Auction"
         private const val ITEM_ID_AS_LOGIN = "auction-%s"
