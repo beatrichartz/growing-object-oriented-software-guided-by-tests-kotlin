@@ -1,6 +1,8 @@
 package auctionsniper
 
-interface AuctionEventListener {
+import java.util.*
+
+interface AuctionEventListener: EventListener {
     enum class PriceSource {
         FromSniper, FromOtherBidder
     }

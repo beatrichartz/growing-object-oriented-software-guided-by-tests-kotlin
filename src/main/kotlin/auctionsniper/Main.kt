@@ -3,6 +3,7 @@ package auctionsniper
 import auctionsniper.ui.MainWindow
 import auctionsniper.ui.SnipersTableModel
 import auctionsniper.ui.SwingThreadSniperListener
+import eventhandling.Announcer
 import org.jivesoftware.smack.XMPPConnection
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
@@ -45,10 +46,13 @@ class Main {
                 snipers.addSniper(SniperSnapshot.joining(itemId))
 
                 val chat = connection.chatManager.createChat(auctionId(itemId, connection), null)
-                val auction = XMPPAuction(chat)
-
+                var auctionEventListeners = Announcer.toListenerType(AuctionEventListener::class.java)
                 chat.addMessageListener(AuctionMessageTranslator(
-                        connection.user, AuctionSniper(itemId, auction, SwingThreadSniperListener(snipers))))
+                        connection.user, auctionEventListeners.announce()))
+
+                val auction = XMPPAuction(chat)
+                auctionEventListeners.addListener(
+                        AuctionSniper(itemId, auction, SwingThreadSniperListener(snipers)))
                 auction.join()
             }
         })

@@ -15,7 +15,7 @@ class Announcer<T : EventListener>(listenerType: Class<out T>) {
                 arrayOf<Class<*>>(listenerType)
         ) {
             _, method, args ->
-            announce(method, args)
+            announce(method, args ?: emptyArray())
             null
         })
     }
