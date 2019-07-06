@@ -3,7 +3,6 @@ package auctionsniper
 import auctionsniper.ui.MainWindow
 import auctionsniper.ui.SnipersTableModel
 import auctionsniper.ui.SwingThreadSniperListener
-import eventhandling.Announcer
 import org.jivesoftware.smack.XMPPConnection
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
@@ -15,9 +14,7 @@ class Main {
         private const val ARG_USERNAME = 1
         private const val ARG_PASSWORD = 2
 
-        private const val AUCTION_RESOURCE = "Auction"
-        private const val ITEM_ID_AS_LOGIN = "auction-%s"
-        private const val AUCTION_ID_FORMAT = "$ITEM_ID_AS_LOGIN@%s/$AUCTION_RESOURCE"
+        internal const val AUCTION_RESOURCE = "Auction"
 
         fun main(vararg args: String) {
             val main = Main()
@@ -35,23 +32,14 @@ class Main {
             return connection
         }
 
-        private fun auctionId(itemId: String, connection: XMPPConnection): String {
-            return String.format(AUCTION_ID_FORMAT, itemId, connection.serviceName)
-        }
     }
 
     private fun addUserRequestListenerFor(connection: XMPPConnection) {
         ui.addUserRequestListener(object : UserRequestListener {
             override fun joinAuction(itemId: String) {
                 snipers.addSniper(SniperSnapshot.joining(itemId))
-
-                val chat = connection.chatManager.createChat(auctionId(itemId, connection), null)
-                var auctionEventListeners = Announcer.toListenerType(AuctionEventListener::class.java)
-                chat.addMessageListener(AuctionMessageTranslator(
-                        connection.user, auctionEventListeners.announce()))
-
-                val auction = XMPPAuction(chat)
-                auctionEventListeners.addListener(
+                val auction: Auction = XMPPAuction(connection, itemId)
+                auction.addAuctionEventListener(
                         AuctionSniper(itemId, auction, SwingThreadSniperListener(snipers)))
                 auction.join()
             }

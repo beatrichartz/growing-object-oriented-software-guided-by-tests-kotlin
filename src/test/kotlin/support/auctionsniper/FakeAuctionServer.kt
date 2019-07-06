@@ -1,4 +1,4 @@
-package endtoend.auctionsniper
+package support.auctionsniper
 
 import auctionsniper.SOLProtocol
 import org.hamcrest.Matcher

@@ -1,12 +1,11 @@
-package endtoend.auctionsniper
+package support.auctionsniper
 
 import auctionsniper.Main
 import auctionsniper.ui.MainWindow
 import auctionsniper.SniperState.*
 import auctionsniper.ui.SnipersTableModel.Companion.textFor
-import endtoend.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
-import endtoend.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
-import support.auctionsniper.AuctionSniperDriver
+import support.auctionsniper.FakeAuctionServer.Companion.AUCTION_RESOURCE
+import support.auctionsniper.FakeAuctionServer.Companion.XMPP_HOSTNAME
 
 class ApplicationRunner {
     companion object {

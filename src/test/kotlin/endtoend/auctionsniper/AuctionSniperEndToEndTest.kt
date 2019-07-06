@@ -3,6 +3,8 @@ package endtoend.auctionsniper
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import support.auctionsniper.ApplicationRunner
+import support.auctionsniper.FakeAuctionServer
 
 class AuctionSniperEndToEndTest {
     private lateinit var auction: FakeAuctionServer
