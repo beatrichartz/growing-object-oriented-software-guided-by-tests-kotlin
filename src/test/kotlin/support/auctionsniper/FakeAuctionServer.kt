@@ -1,6 +1,6 @@
 package support.auctionsniper
 
-import auctionsniper.SOLProtocol
+import auctionsniper.xmpp.SOLProtocol
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers

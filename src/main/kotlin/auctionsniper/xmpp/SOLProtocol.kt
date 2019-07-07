@@ -1,4 +1,4 @@
-package auctionsniper
+package auctionsniper.xmpp
 
 object SOLProtocol {
     private const val VERSION = "SOLVersion: 1.1;"

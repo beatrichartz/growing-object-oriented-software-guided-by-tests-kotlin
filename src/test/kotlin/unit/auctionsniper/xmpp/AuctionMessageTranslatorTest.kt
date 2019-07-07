@@ -1,13 +1,14 @@
-package unit.auctionsniper
+package unit.auctionsniper.xmpp
 
 import auctionsniper.AuctionEventListener
 import auctionsniper.AuctionEventListener.PriceSource
-import auctionsniper.AuctionMessageTranslator
+import auctionsniper.xmpp.AuctionMessageTranslator
 import org.jivesoftware.smack.Chat
 import org.jivesoftware.smack.packet.Message
 import org.jmock.junit5.JUnit5Mockery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
+import unit.auctionsniper.expect
 
 class AuctionMessageTranslatorTest {
     companion object {
@@ -50,7 +51,7 @@ class AuctionMessageTranslatorTest {
             exactly(1).of(listener).currentPrice(192, 7, PriceSource.FromSniper)
         }.whenRunning {
             val message = Message()
-            message.body = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: ${SNIPER_ID};"
+            message.body = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: $SNIPER_ID;"
 
             translator.processMessage(UNUSED_CHAT, message)
         }

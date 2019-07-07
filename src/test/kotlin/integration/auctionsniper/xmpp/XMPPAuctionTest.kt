@@ -1,8 +1,8 @@
-package integration.auctionsniper
+package integration.auctionsniper.xmpp
 
 import auctionsniper.AuctionEventListener
 import auctionsniper.Main
-import auctionsniper.XMPPAuction
+import auctionsniper.xmpp.XMPPAuction
 import org.jivesoftware.smack.XMPPConnection
 import org.jivesoftware.smack.XMPPException
 import org.junit.Assert.assertTrue
