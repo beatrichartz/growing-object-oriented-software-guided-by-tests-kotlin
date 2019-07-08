@@ -1,11 +1,12 @@
 package auctionsniper
 
 import auctionsniper.AuctionEventListener.PriceSource
+import eventhandling.Announcer
 
 class AuctionSniper(itemId: String,
-                    private val auction: Auction,
-                    private val sniperListener: SniperListener) : AuctionEventListener {
-    private var snapshot = SniperSnapshot.joining(itemId)
+                    private val auction: Auction) : AuctionEventListener {
+    var snapshot = SniperSnapshot.joining(itemId)
+    private val listeners = Announcer.toListenerType(SniperListener::class.java)
 
     override fun auctionClosed() {
         snapshot = snapshot.closed()
@@ -27,8 +28,11 @@ class AuctionSniper(itemId: String,
         notifyChange()
     }
 
-    private fun notifyChange() {
-        sniperListener.sniperStateChanged(snapshot)
+    fun addSniperListener(listener: SniperListener) {
+        listeners.addListener(listener)
     }
 
+    private fun notifyChange() {
+        listeners.announce().sniperStateChanged(snapshot)
+    }
 }

@@ -1,11 +1,9 @@
 package auctionsniper.ui
 
-import auctionsniper.SniperListener
-import auctionsniper.SniperSnapshot
-import auctionsniper.SniperState
+import auctionsniper.*
 import javax.swing.table.AbstractTableModel
 
-class SnipersTableModel : AbstractTableModel(), SniperListener {
+class SnipersTableModel : AbstractTableModel(), SniperListener, SniperCollector {
     companion object {
         fun textFor(state: SniperState): String {
             return STATUS_TEXT[state.ordinal]
@@ -17,10 +15,15 @@ class SnipersTableModel : AbstractTableModel(), SniperListener {
     }
 
     private val snapshots: ArrayList<SniperSnapshot> = arrayListOf()
-    fun addSniper(snapshot: SniperSnapshot) {
+    override fun addSniper(sniper: AuctionSniper) {
+        addSniperSnapshot(sniper.snapshot)
+        sniper.addSniperListener(SwingThreadSniperListener(this))
+    }
+
+    private fun addSniperSnapshot(snapshot: SniperSnapshot) {
+        val row = snapshots.size
         snapshots.add(snapshot)
-        val rowIndex = snapshots.size - 1
-        fireTableRowsInserted(rowIndex, rowIndex)
+        fireTableRowsInserted(row, row)
     }
 
     override fun getRowCount(): Int {

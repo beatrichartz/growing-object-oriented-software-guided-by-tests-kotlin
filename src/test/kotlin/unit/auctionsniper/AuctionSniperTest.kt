@@ -7,6 +7,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.FeatureMatcher
 import org.hamcrest.Matcher
 import org.jmock.junit5.JUnit5Mockery
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class AuctionSniperTest {
@@ -17,8 +18,13 @@ class AuctionSniperTest {
     private val context = JUnit5Mockery()
     private val sniperListener = context.mock(SniperListener::class.java)
     private val auction = context.mock(Auction::class.java)
-    private val sniper = AuctionSniper(ITEM_ID, auction, sniperListener)
+    private val sniper = AuctionSniper(ITEM_ID, auction)
     private val sniperState = context.states("sniper")
+
+    @BeforeEach
+    internal fun addSniperListener() {
+        sniper.addSniperListener(sniperListener)
+    }
 
     @Test
     internal fun reportsLostWhenAuctionClosesImmediately() {

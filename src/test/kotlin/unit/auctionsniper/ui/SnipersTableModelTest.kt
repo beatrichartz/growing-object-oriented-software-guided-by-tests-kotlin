@@ -1,8 +1,9 @@
 package unit.auctionsniper.ui
 
-import auctionsniper.ui.Column
+import auctionsniper.AuctionSniper
 import auctionsniper.SniperSnapshot
 import auctionsniper.SniperState
+import auctionsniper.ui.Column
 import auctionsniper.ui.SnipersTableModel
 import auctionsniper.ui.SnipersTableModel.Companion.textFor
 import org.hamcrest.Matcher
@@ -13,6 +14,7 @@ import org.junit.Assert.assertThat
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import unit.auctionsniper.NullAuction
 import unit.auctionsniper.expect
 import javax.swing.event.TableModelEvent
 import javax.swing.event.TableModelListener
@@ -22,6 +24,7 @@ class SnipersTableModelTest {
     private val context = JUnit5Mockery()
     private val listener = context.mock(TableModelListener::class.java)
     private val model = SnipersTableModel()
+    private val sniper = AuctionSniper("item 0", NullAuction())
 
     @BeforeEach
     internal fun attachModelListener() {
@@ -42,17 +45,16 @@ class SnipersTableModelTest {
 
     @Test
     internal fun notifiesListenersWhenAddingASniper() {
-        val joining = SniperSnapshot.joining("item-321")
         assertEquals(0, model.rowCount)
 
         context.expect {
             oneOf(listener).tableChanged(with(anInsertionAtRow(0)))
         }.whenRunning {
-            model.addSniper(joining)
+            model.addSniper(sniper)
         }
 
         assertEquals(1, model.rowCount)
-        assertRowMatchesSnapshot(0, joining)
+        assertRowMatchesSnapshot(0, sniper.snapshot)
     }
 
     @Test
@@ -60,8 +62,8 @@ class SnipersTableModelTest {
         context.expect {
             ignoring(listener)
         }.whenRunning {
-            model.addSniper(SniperSnapshot.joining("item 0"))
-            model.addSniper(SniperSnapshot.joining("item 1"))
+            model.addSniper(sniper)
+            model.addSniper(AuctionSniper("item 1", NullAuction()))
         }
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER))
@@ -74,12 +76,12 @@ class SnipersTableModelTest {
             allowing(listener).tableChanged(with(anyInsertionEvent()))
             oneOf(listener).tableChanged(with(aChangeInRow(1)))
         }.whenRunning {
-            val joining = SniperSnapshot.joining("item 0")
-            val joining2 = SniperSnapshot.joining("item 1")
+            val joining = sniper
+            val joining2 = AuctionSniper("item 1", NullAuction())
 
             model.addSniper(joining)
             model.addSniper(joining2)
-            model.sniperStateChanged(joining2.bidding(555, 666))
+            model.sniperStateChanged(joining2.snapshot.bidding(555, 666))
         }
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER))

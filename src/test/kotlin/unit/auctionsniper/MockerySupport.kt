@@ -1,12 +1,17 @@
 package unit.auctionsniper
 
-import auctionsniper.SniperSnapshot
-import auctionsniper.SniperState
+import auctionsniper.*
 import org.hamcrest.Matcher
 import org.jmock.Expectations
 import org.jmock.junit5.JUnit5Mockery
 
 internal class NonNullExpectations : Expectations() {
+    internal fun with(matcher: Matcher<AuctionSniper>): AuctionSniper {
+        val nullSniper = AuctionSniper("", NullAuction())
+        with(matcher, nullSniper)
+        return nullSniper
+    }
+
     internal fun with(matcher: Matcher<SniperSnapshot>): SniperSnapshot {
         val nullSniperSnapshot = SniperSnapshot("", 0, 0, SniperState.JOINING)
         with(matcher, nullSniperSnapshot)
