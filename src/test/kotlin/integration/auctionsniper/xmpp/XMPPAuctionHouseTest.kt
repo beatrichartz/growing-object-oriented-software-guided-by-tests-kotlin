@@ -1,9 +1,8 @@
 package integration.auctionsniper.xmpp
 
 import auctionsniper.AuctionEventListener
-import auctionsniper.Main
-import auctionsniper.xmpp.XMPPAuction
-import org.jivesoftware.smack.XMPPConnection
+import auctionsniper.AuctionHouse
+import auctionsniper.XMPPAuctionHouse
 import org.jivesoftware.smack.XMPPException
 import org.junit.Assert.assertTrue
 import org.junit.jupiter.api.AfterEach
@@ -14,16 +13,17 @@ import support.auctionsniper.FakeAuctionServer
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class XMPPAuctionTest {
+class XMPPAuctionHouseTest {
     private val auctionServer = FakeAuctionServer("item-54321")
-    private lateinit var connection: XMPPConnection
+    private lateinit var auctionHouse: AuctionHouse
 
     @BeforeEach
     @Throws(XMPPException::class)
-    fun createConnection() {
-        connection = XMPPConnection(FakeAuctionServer.XMPP_HOSTNAME)
-        connection.connect()
-        connection.login(ApplicationRunner.SNIPER_ID, ApplicationRunner.SNIPER_PASSWORD, Main.AUCTION_RESOURCE)
+    fun connectAuctionHouse() {
+        auctionHouse = XMPPAuctionHouse.connect(
+                FakeAuctionServer.XMPP_HOSTNAME,
+                ApplicationRunner.SNIPER_ID,
+                ApplicationRunner.SNIPER_PASSWORD)
     }
 
     @BeforeEach
@@ -33,8 +33,8 @@ class XMPPAuctionTest {
     }
 
     @AfterEach
-    fun closeConnection() {
-        connection.disconnect()
+    fun disconnectAuctionHouse() {
+        auctionHouse.disconnect()
     }
 
     @AfterEach
@@ -46,7 +46,7 @@ class XMPPAuctionTest {
     @Throws(Exception::class)
     fun receivesEventsFromAuctionServerAfterJoining() {
         val auctionWasClosed = CountDownLatch(1)
-        val auction = XMPPAuction(connection, auctionServer.itemId)
+        val auction = auctionHouse.auctionFor(auctionServer.itemId)
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed))
         auction.join()
         auctionServer.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
