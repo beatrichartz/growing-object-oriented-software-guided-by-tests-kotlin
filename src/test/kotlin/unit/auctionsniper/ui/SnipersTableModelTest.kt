@@ -50,7 +50,7 @@ class SnipersTableModelTest {
         context.expect {
             oneOf(listener).tableChanged(with(anInsertionAtRow(0)))
         }.whenRunning {
-            model.addSniper(sniper)
+            model.sniperAdded(sniper)
         }
 
         assertEquals(1, model.rowCount)
@@ -62,8 +62,8 @@ class SnipersTableModelTest {
         context.expect {
             ignoring(listener)
         }.whenRunning {
-            model.addSniper(sniper)
-            model.addSniper(AuctionSniper("item 1", NullAuction()))
+            model.sniperAdded(sniper)
+            model.sniperAdded(AuctionSniper("item 1", NullAuction()))
         }
 
         assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER))
@@ -79,8 +79,8 @@ class SnipersTableModelTest {
             val joining = sniper
             val joining2 = AuctionSniper("item 1", NullAuction())
 
-            model.addSniper(joining)
-            model.addSniper(joining2)
+            model.sniperAdded(joining)
+            model.sniperAdded(joining2)
             model.sniperStateChanged(joining2.snapshot.bidding(555, 666))
         }
 

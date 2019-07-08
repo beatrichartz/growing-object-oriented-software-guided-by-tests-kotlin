@@ -1,7 +1,6 @@
 package auctionsniper
 
 import auctionsniper.ui.MainWindow
-import auctionsniper.ui.SnipersTableModel
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
@@ -22,10 +21,10 @@ class Main {
     }
 
     private fun addUserRequestListenerFor(auctionHouse: AuctionHouse) {
-        ui.addUserRequestListener(SniperLauncher(auctionHouse, snipers))
+        ui.addUserRequestListener(SniperLauncher(auctionHouse, portfolio))
     }
 
-    private val snipers = SnipersTableModel()
+    private val portfolio = SniperPortfolio()
     private lateinit var ui: MainWindow
 
     init {
@@ -42,7 +41,7 @@ class Main {
 
     private fun startUserInterface() {
         SwingUtilities.invokeAndWait {
-            ui = MainWindow(snipers)
+            ui = MainWindow(portfolio)
         }
     }
 }

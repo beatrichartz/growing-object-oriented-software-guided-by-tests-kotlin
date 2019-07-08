@@ -1,12 +1,13 @@
 package auctionsniper.ui
 
+import auctionsniper.SniperPortfolio
 import auctionsniper.UserRequestListener
 import eventhandling.Announcer
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import javax.swing.*
 
-class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TITLE) {
+class MainWindow(portfolio: SniperPortfolio) : JFrame(APPLICATION_TITLE) {
     companion object {
         const val NEW_ITEM_ID_NAME = "item id"
         const val JOIN_BUTTON_NAME = "join"
@@ -19,7 +20,7 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
 
     init {
         name = MAIN_WINDOW_NAME
-        fillContentPane(makeSnipersTable(), makeControls())
+        fillContentPane(makeSnipersTable(portfolio), makeControls())
         pack()
         defaultCloseOperation = EXIT_ON_CLOSE
         isVisible = true
@@ -42,8 +43,10 @@ class MainWindow(private val snipers: SnipersTableModel) : JFrame(APPLICATION_TI
         return controls
     }
 
-    private fun makeSnipersTable(): JTable {
-        val snipersTable = JTable(snipers)
+    private fun makeSnipersTable(portfolio: SniperPortfolio): JTable {
+        val model = SnipersTableModel()
+        portfolio.addPortfolioListener(model)
+        val snipersTable = JTable(model)
         snipersTable.name = SNIPERS_TABLE_NAME
         return snipersTable
     }

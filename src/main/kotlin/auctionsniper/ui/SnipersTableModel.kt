@@ -1,9 +1,13 @@
 package auctionsniper.ui
 
-import auctionsniper.*
+import auctionsniper.AuctionSniper
+import auctionsniper.SniperListener
+import auctionsniper.SniperPortfolio.PortfolioListener
+import auctionsniper.SniperSnapshot
+import auctionsniper.SniperState
 import javax.swing.table.AbstractTableModel
 
-class SnipersTableModel : AbstractTableModel(), SniperListener, SniperCollector {
+class SnipersTableModel : AbstractTableModel(), SniperListener, PortfolioListener {
     companion object {
         fun textFor(state: SniperState): String {
             return STATUS_TEXT[state.ordinal]
@@ -15,9 +19,10 @@ class SnipersTableModel : AbstractTableModel(), SniperListener, SniperCollector 
     }
 
     private val snapshots: ArrayList<SniperSnapshot> = arrayListOf()
-    override fun addSniper(sniper: AuctionSniper) {
-        addSniperSnapshot(sniper.snapshot)
+
+    override fun sniperAdded(sniper: AuctionSniper) {
         sniper.addSniperListener(SwingThreadSniperListener(this))
+        addSniperSnapshot(sniper.snapshot)
     }
 
     private fun addSniperSnapshot(snapshot: SniperSnapshot) {

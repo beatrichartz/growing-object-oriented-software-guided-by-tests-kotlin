@@ -1,8 +1,8 @@
 package integration.auctionsniper
 
-import auctionsniper.ui.MainWindow
-import auctionsniper.ui.SnipersTableModel
+import auctionsniper.SniperPortfolio
 import auctionsniper.UserRequestListener
+import auctionsniper.ui.MainWindow
 import com.objogate.wl.swing.probe.ValueMatcherProbe
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.AfterEach
@@ -12,8 +12,8 @@ import support.auctionsniper.AuctionSniperDriver
 
 
 class MainWindowTest {
-    private val tableModel = SnipersTableModel()
-    private val mainWindow = MainWindow(tableModel)
+    private val portfolio = SniperPortfolio()
+    private val mainWindow = MainWindow(portfolio)
     private val driver = AuctionSniperDriver(100)
 
     @Test
