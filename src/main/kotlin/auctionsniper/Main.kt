@@ -2,7 +2,6 @@ package auctionsniper
 
 import auctionsniper.ui.MainWindow
 import auctionsniper.ui.SnipersTableModel
-import auctionsniper.ui.SwingThreadSniperListener
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities
@@ -23,15 +22,7 @@ class Main {
     }
 
     private fun addUserRequestListenerFor(auctionHouse: AuctionHouse) {
-        ui.addUserRequestListener(object : UserRequestListener {
-            override fun joinAuction(itemId: String) {
-                snipers.addSniper(SniperSnapshot.joining(itemId))
-                val auction = auctionHouse.auctionFor(itemId)
-                auction.addAuctionEventListener(
-                        AuctionSniper(itemId, auction, SwingThreadSniperListener(snipers)))
-                auction.join()
-            }
-        })
+        ui.addUserRequestListener(SniperLauncher(auctionHouse, snipers))
     }
 
     private val snipers = SnipersTableModel()
