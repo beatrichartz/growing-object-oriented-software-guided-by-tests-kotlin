@@ -1,6 +1,8 @@
-package auctionsniper
+package auctionsniper.xmpp
 
-import auctionsniper.xmpp.XMPPAuction
+import auctionsniper.Auction
+import auctionsniper.AuctionHouse
+import auctionsniper.Item
 import org.jivesoftware.smack.XMPPConnection
 
 class XMPPAuctionHouse(private val connection: XMPPConnection) : AuctionHouse {
@@ -16,8 +18,8 @@ class XMPPAuctionHouse(private val connection: XMPPConnection) : AuctionHouse {
         }
     }
 
-    override fun auctionFor(itemId: String): Auction {
-        return XMPPAuction(connection, itemId)
+    override fun auctionFor(item: Item): Auction {
+        return XMPPAuction(connection, item)
     }
 
     override fun disconnect() {

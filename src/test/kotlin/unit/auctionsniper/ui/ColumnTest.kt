@@ -1,5 +1,6 @@
 package unit.auctionsniper.ui
 
+import auctionsniper.Item
 import auctionsniper.SniperSnapshot
 import auctionsniper.SniperState
 import auctionsniper.ui.Column
@@ -17,7 +18,7 @@ class ColumnTest {
 
     @Test
     internal fun retrievingSnapshotValuesForColumns() {
-        val snapshot = SniperSnapshot("ID", 1, 2, SniperState.WON)
+        val snapshot = SniperSnapshot(Item("ID", 0), 1, 2, SniperState.WON)
         assertEquals("ID", Column.ITEM_IDENTIFIER.valueIn(snapshot))
         assertEquals(1, Column.LAST_PRICE.valueIn(snapshot))
         assertEquals(2, Column.LAST_BID.valueIn(snapshot))

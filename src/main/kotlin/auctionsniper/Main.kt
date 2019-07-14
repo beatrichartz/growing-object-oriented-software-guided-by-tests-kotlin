@@ -1,6 +1,7 @@
 package auctionsniper
 
 import auctionsniper.ui.MainWindow
+import auctionsniper.xmpp.XMPPAuctionHouse
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import javax.swing.SwingUtilities

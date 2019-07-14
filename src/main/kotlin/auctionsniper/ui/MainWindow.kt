@@ -1,5 +1,6 @@
 package auctionsniper.ui
 
+import auctionsniper.Item
 import auctionsniper.SniperPortfolio
 import auctionsniper.UserRequestListener
 import eventhandling.Announcer
@@ -45,12 +46,22 @@ class MainWindow(portfolio: SniperPortfolio) : JFrame(APPLICATION_TITLE) {
         val joinAuctionButton = JButton("Join Auction")
         joinAuctionButton.name = JOIN_BUTTON_NAME
         joinAuctionButton.addActionListener {
-            userRequests.announce().joinAuction(itemIdField.text)
+            userRequests.announce().joinAuction(
+                    Item(itemIdFieldValue(itemIdField), stopPriceFieldValue(stopPriceField)))
         }
         controls.add(joinAuctionButton)
 
         return controls
     }
+
+    private fun stopPriceFieldValue(stopPriceField: JFormattedTextField): Long {
+       if (stopPriceField.text.isBlank()) {
+           return Long.MAX_VALUE
+       } else {
+           return stopPriceField.value as Long
+       }
+    }
+    private fun itemIdFieldValue(itemIdField: JTextField) = itemIdField.text
 
     private fun makeSnipersTable(portfolio: SniperPortfolio): JTable {
         val model = SnipersTableModel()

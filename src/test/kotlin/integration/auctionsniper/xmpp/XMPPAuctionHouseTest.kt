@@ -2,7 +2,8 @@ package integration.auctionsniper.xmpp
 
 import auctionsniper.AuctionEventListener
 import auctionsniper.AuctionHouse
-import auctionsniper.XMPPAuctionHouse
+import auctionsniper.Item
+import auctionsniper.xmpp.XMPPAuctionHouse
 import org.jivesoftware.smack.XMPPException
 import org.junit.Assert.assertTrue
 import org.junit.jupiter.api.AfterEach
@@ -46,7 +47,7 @@ class XMPPAuctionHouseTest {
     @Throws(Exception::class)
     fun receivesEventsFromAuctionServerAfterJoining() {
         val auctionWasClosed = CountDownLatch(1)
-        val auction = auctionHouse.auctionFor(auctionServer.itemId)
+        val auction = auctionHouse.auctionFor(Item(auctionServer.itemId, 567))
         auction.addAuctionEventListener(auctionClosedListener(auctionWasClosed))
         auction.join()
         auctionServer.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)

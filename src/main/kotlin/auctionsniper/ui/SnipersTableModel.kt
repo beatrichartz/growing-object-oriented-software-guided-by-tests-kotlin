@@ -48,8 +48,8 @@ class SnipersTableModel : AbstractTableModel(), SniperListener, PortfolioListene
     }
 
     override fun sniperStateChanged(snapshot: SniperSnapshot) {
-        val row = snapshots.indexOfFirst { snapshot.itemId == it.itemId }
-        if (row < 0) throw IllegalArgumentException("Sniper for ${snapshot.itemId} is not registered")
+        val row = snapshots.indexOfFirst { snapshot.item == it.item }
+        if (row < 0) throw IllegalArgumentException("Sniper for ${snapshot.item} is not registered")
 
         snapshots[row] = snapshot
         fireTableRowsUpdated(row, row)

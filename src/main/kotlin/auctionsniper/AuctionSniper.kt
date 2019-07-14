@@ -3,9 +3,9 @@ package auctionsniper
 import auctionsniper.AuctionEventListener.PriceSource
 import eventhandling.Announcer
 
-class AuctionSniper(itemId: String,
+class AuctionSniper(private val item: Item,
                     private val auction: Auction) : AuctionEventListener {
-    var snapshot = SniperSnapshot.joining(itemId)
+    var snapshot = SniperSnapshot.joining(item)
     private val listeners = Announcer.toListenerType(SniperListener::class.java)
 
     override fun auctionClosed() {
@@ -19,10 +19,13 @@ class AuctionSniper(itemId: String,
                 snapshot.winning(price)
             PriceSource.FromOtherBidder -> {
                 val bid = price + increment
-                auction.bid(bid)
-                snapshot.bidding(price, bid)
+                if (item.allows(bid)) {
+                    auction.bid(bid)
+                    snapshot.bidding(price, bid)
+                } else {
+                    snapshot.losing(price)
+                }
             }
-
         }
 
         notifyChange()

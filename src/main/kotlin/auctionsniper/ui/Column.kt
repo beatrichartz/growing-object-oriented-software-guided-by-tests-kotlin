@@ -5,7 +5,7 @@ import auctionsniper.SniperSnapshot
 enum class Column(val title: String) {
     ITEM_IDENTIFIER("Item") {
         override fun valueIn(snapshot: SniperSnapshot): String {
-            return snapshot.itemId
+            return snapshot.item.identifier
         }
     },
     LAST_PRICE("Last Price") {

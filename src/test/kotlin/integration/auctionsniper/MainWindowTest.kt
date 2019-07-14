@@ -1,5 +1,6 @@
 package integration.auctionsniper
 
+import auctionsniper.Item
 import auctionsniper.SniperPortfolio
 import auctionsniper.UserRequestListener
 import auctionsniper.ui.MainWindow
@@ -8,8 +9,6 @@ import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import support.auctionsniper.AuctionSniperDriver
-
-
 
 class MainWindowTest {
     private val portfolio = SniperPortfolio()
@@ -21,8 +20,8 @@ class MainWindowTest {
         val buttonProbe = ValueMatcherProbe<String>(equalTo("an item id"), "join request")
 
         mainWindow.addUserRequestListener(object : UserRequestListener {
-            override fun joinAuction(itemId: String) {
-                buttonProbe.setReceivedValue(itemId)
+            override fun joinAuction(item: Item) {
+                buttonProbe.setReceivedValue(item.identifier)
             }
         })
 

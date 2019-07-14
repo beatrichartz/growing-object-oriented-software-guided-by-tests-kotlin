@@ -1,6 +1,7 @@
 package unit.auctionsniper.ui
 
 import auctionsniper.AuctionSniper
+import auctionsniper.Item
 import auctionsniper.SniperSnapshot
 import auctionsniper.SniperState
 import auctionsniper.ui.Column
@@ -24,7 +25,7 @@ class SnipersTableModelTest {
     private val context = JUnit5Mockery()
     private val listener = context.mock(TableModelListener::class.java)
     private val model = SnipersTableModel()
-    private val sniper = AuctionSniper("item 0", NullAuction())
+    private val sniper = AuctionSniper(Item("itemId 0", 0), NullAuction())
 
     @BeforeEach
     internal fun attachModelListener() {
@@ -63,11 +64,11 @@ class SnipersTableModelTest {
             ignoring(listener)
         }.whenRunning {
             model.sniperAdded(sniper)
-            model.sniperAdded(AuctionSniper("item 1", NullAuction()))
+            model.sniperAdded(AuctionSniper(Item("itemId 1", 0), NullAuction()))
         }
 
-        assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER))
-        assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER))
+        assertEquals("itemId 0", cellValue(0, Column.ITEM_IDENTIFIER))
+        assertEquals("itemId 1", cellValue(1, Column.ITEM_IDENTIFIER))
     }
 
     @Test
@@ -77,17 +78,17 @@ class SnipersTableModelTest {
             oneOf(listener).tableChanged(with(aChangeInRow(1)))
         }.whenRunning {
             val joining = sniper
-            val joining2 = AuctionSniper("item 1", NullAuction())
+            val joining2 = AuctionSniper(Item("itemId 1", 0), NullAuction())
 
             model.sniperAdded(joining)
             model.sniperAdded(joining2)
             model.sniperStateChanged(joining2.snapshot.bidding(555, 666))
         }
 
-        assertEquals("item 0", cellValue(0, Column.ITEM_IDENTIFIER))
+        assertEquals("itemId 0", cellValue(0, Column.ITEM_IDENTIFIER))
         assertEquals(textFor(SniperState.JOINING), cellValue(0, Column.SNIPER_STATE))
 
-        assertEquals("item 1", cellValue(1, Column.ITEM_IDENTIFIER))
+        assertEquals("itemId 1", cellValue(1, Column.ITEM_IDENTIFIER))
         assertEquals(555, cellValue(1, Column.LAST_PRICE))
         assertEquals(666, cellValue(1, Column.LAST_BID))
         assertEquals(textFor(SniperState.BIDDING), cellValue(1, Column.SNIPER_STATE))
@@ -97,14 +98,14 @@ class SnipersTableModelTest {
     internal fun throwsDefectIfNoExistingSniperForAnUpdate() {
         val exception = assertThrows(IllegalArgumentException::class.java) {
             model.sniperStateChanged(
-                    SniperSnapshot.joining("item").bidding(444,445))
+                    SniperSnapshot.joining(Item("itemId", 0)).bidding(444,445))
         }
 
-        assertThat(exception, hasProperty("message", containsString("item")))
+        assertThat(exception, hasProperty("message", containsString("itemId")))
     }
 
     private fun assertRowMatchesSnapshot(row: Int, snapshot: SniperSnapshot) {
-        assertEquals(snapshot.itemId, cellValue(row, Column.ITEM_IDENTIFIER))
+        assertEquals(snapshot.item.identifier, cellValue(row, Column.ITEM_IDENTIFIER))
         assertEquals(snapshot.lastPrice, cellValue(row, Column.LAST_PRICE))
         assertEquals(snapshot.lastBid, cellValue(row, Column.LAST_BID))
         assertEquals(textFor(snapshot.state), cellValue(row, Column.SNIPER_STATE))

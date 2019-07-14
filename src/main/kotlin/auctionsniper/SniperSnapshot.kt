@@ -28,27 +28,31 @@ enum class SniperState {
     }
 }
 
-class SniperSnapshot(internal val itemId: String,
+class SniperSnapshot(internal val item: Item,
                      internal val lastPrice: Int,
                      internal val lastBid: Int,
                      internal val state: SniperState) {
 
     companion object {
-        fun joining(itemId: String): SniperSnapshot {
-            return SniperSnapshot(itemId, 0, 0, SniperState.JOINING)
+        fun joining(item: Item): SniperSnapshot {
+            return SniperSnapshot(item, 0, 0, SniperState.JOINING)
         }
     }
 
     fun winning(newLastPrice: Int): SniperSnapshot {
-        return SniperSnapshot(itemId, newLastPrice, lastBid, SniperState.WINNING)
+        return SniperSnapshot(item, newLastPrice, lastBid, SniperState.WINNING)
+    }
+
+    fun losing(price: Int): SniperSnapshot {
+        return SniperSnapshot(item, price, lastBid, SniperState.LOSING)
     }
 
     fun bidding(newLastPrice: Int, newLastBid: Int): SniperSnapshot {
-        return SniperSnapshot(itemId, newLastPrice, newLastBid, SniperState.BIDDING)
+        return SniperSnapshot(item, newLastPrice, newLastBid, SniperState.BIDDING)
     }
 
     fun closed(): SniperSnapshot {
-        return SniperSnapshot(itemId, lastPrice, lastBid, state.whenAuctionClosed())
+        return SniperSnapshot(item, lastPrice, lastBid, state.whenAuctionClosed())
     }
 
     override fun equals(other: Any?): Boolean {
@@ -57,22 +61,23 @@ class SniperSnapshot(internal val itemId: String,
 
         other as SniperSnapshot
 
-        if (itemId != other.itemId) return false
+        if (item != other.item) return false
         if (lastPrice != other.lastPrice) return false
         if (lastBid != other.lastBid) return false
+        if (state != other.state) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = itemId.hashCode()
+        var result = item.hashCode()
         result = 31 * result + lastPrice
         result = 31 * result + lastBid
+        result = 31 * result + state.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "SniperSnapshot(itemId='$itemId', lastPrice=$lastPrice, lastBid=$lastBid)"
+        return "SniperSnapshot(item=$item, lastPrice=$lastPrice, lastBid=$lastBid, state=$state)"
     }
-
 }

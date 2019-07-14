@@ -2,12 +2,13 @@ package auctionsniper.xmpp
 
 import auctionsniper.Auction
 import auctionsniper.AuctionEventListener
+import auctionsniper.Item
 import eventhandling.Announcer
 import org.jivesoftware.smack.Chat
 import org.jivesoftware.smack.XMPPConnection
 import org.jivesoftware.smack.XMPPException
 
-class XMPPAuction(connection: XMPPConnection, itemId: String) : Auction {
+class XMPPAuction(connection: XMPPConnection, item: Item) : Auction {
     companion object {
         private const val ITEM_ID_AS_LOGIN = "auction-%s"
         private const val AUCTION_ID_FORMAT = "$ITEM_ID_AS_LOGIN@%s/Auction"
@@ -19,7 +20,7 @@ class XMPPAuction(connection: XMPPConnection, itemId: String) : Auction {
 
     init {
         chat = connection.chatManager.createChat(
-                auctionId(itemId, connection),
+                auctionId(item.identifier, connection),
                 AuctionMessageTranslator(connection.user, auctionEventListeners.announce()))
     }
 
