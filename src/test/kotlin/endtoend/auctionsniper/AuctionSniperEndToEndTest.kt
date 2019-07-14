@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test
 import support.auctionsniper.ApplicationRunner
 import support.auctionsniper.FakeAuctionServer
 
+
+
 class AuctionSniperEndToEndTest {
     private lateinit var auction: FakeAuctionServer
     private lateinit var application: ApplicationRunner
@@ -67,6 +69,26 @@ class AuctionSniperEndToEndTest {
 
         auction.announceClosed()
         application.showsSniperHasWonAuction(auction, 1098)
+    }
+
+    @Test
+    internal fun sniperLosesAnAuctionWhenThePriceIsTooHigh() {
+        auction.startSellingItem()
+
+        application.startBiddingWithStopPrice(auction, 1100)
+        auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
+        auction.reportPrice(1000, 98, "other bidder")
+        application.hasShownSniperIsBidding(auction, 1000, 1098)
+
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_XMPP_ID)
+
+        auction.reportPrice(1197, 10, "third party")
+        application.hasShownSniperIsLosing(auction, 1197, 1098)
+
+        auction.reportPrice(1207, 10, "fourth party")
+        application.hasShownSniperIsLosing(auction, 1207, 1098)
+        auction.announceClosed()
+        application.showsSniperHasLostAuction(auction, 1207, 1098)
     }
 
     @Test

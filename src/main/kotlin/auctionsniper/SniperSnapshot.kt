@@ -16,6 +16,11 @@ enum class SniperState {
             return WON
         }
     },
+    LOSING {
+        override fun whenAuctionClosed(): SniperState {
+            return LOST
+        }
+    },
     LOST, WON;
 
     open fun whenAuctionClosed(): SniperState {

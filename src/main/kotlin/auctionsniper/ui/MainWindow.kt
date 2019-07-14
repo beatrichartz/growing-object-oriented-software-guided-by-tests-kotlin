@@ -9,6 +9,7 @@ import javax.swing.*
 
 class MainWindow(portfolio: SniperPortfolio) : JFrame(APPLICATION_TITLE) {
     companion object {
+        const val NEW_ITEM_STOP_PRICE_NAME = "stop price"
         const val NEW_ITEM_ID_NAME = "item id"
         const val JOIN_BUTTON_NAME = "join"
         const val APPLICATION_TITLE = "Auction Sniper"
