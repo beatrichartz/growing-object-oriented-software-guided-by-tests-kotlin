@@ -5,7 +5,10 @@ import auctionsniper.UserRequestListener
 import eventhandling.Announcer
 import java.awt.BorderLayout
 import java.awt.FlowLayout
+import java.text.NumberFormat
 import javax.swing.*
+
+
 
 class MainWindow(portfolio: SniperPortfolio) : JFrame(APPLICATION_TITLE) {
     companion object {
@@ -33,6 +36,11 @@ class MainWindow(portfolio: SniperPortfolio) : JFrame(APPLICATION_TITLE) {
         itemIdField.columns = 25
         itemIdField.name = NEW_ITEM_ID_NAME
         controls.add(itemIdField)
+
+        val stopPriceField = JFormattedTextField(NumberFormat.getIntegerInstance())
+        stopPriceField.columns = 7
+        stopPriceField.name = NEW_ITEM_STOP_PRICE_NAME
+        controls.add(stopPriceField)
 
         val joinAuctionButton = JButton("Join Auction")
         joinAuctionButton.name = JOIN_BUTTON_NAME
