@@ -63,10 +63,23 @@ class AuctionMessageTranslatorTest {
     @Test
     internal fun notifiesAuctionFailedWhenBadMessageReceived() {
         context.expect {
-                exactly(1).of(listener).auctionFailed()
+            exactly(1).of(listener).auctionFailed()
         }.whenRunning {
             val message = Message()
             message.body = "a bad message"
+
+            translator.processMessage(UNUSED_CHAT, message)
+        }
+    }
+
+    @Test
+    fun notifiesAuctionFailedWhenEventTypeMissing() {
+        context.expect {
+            exactly(1).of(listener).auctionFailed()
+        }.whenRunning {
+            val message = Message()
+            message.body = ("SOLVersion: 1.1; CurrentPrice: 234; Increment: 5; Bidder: "
+                    + SNIPER_ID + ";")
 
             translator.processMessage(UNUSED_CHAT, message)
         }
