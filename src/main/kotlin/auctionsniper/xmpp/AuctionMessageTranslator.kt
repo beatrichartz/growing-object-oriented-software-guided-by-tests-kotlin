@@ -12,13 +12,17 @@ class AuctionMessageTranslator(
         private val listener: AuctionEventListener) : MessageListener {
 
     override fun processMessage(chat: Chat?, message: Message) {
-        val event = AuctionEvent.from(message.body)
+        try {
+            val event = AuctionEvent.from(message.body)
 
-        val type = event.type()
-        if ("CLOSE" == type) {
-            listener.auctionClosed()
-        } else if ("PRICE" == type) {
-            listener.currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId))
+            val type = event.type()
+            if ("CLOSE" == type) {
+                listener.auctionClosed()
+            } else if ("PRICE" == type) {
+                listener.currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId))
+            }
+        } catch (e: Exception) {
+            listener.auctionFailed()
         }
     }
 
