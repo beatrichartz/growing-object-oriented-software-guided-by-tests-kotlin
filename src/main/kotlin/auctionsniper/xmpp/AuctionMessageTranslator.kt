@@ -7,6 +7,8 @@ import org.jivesoftware.smack.MessageListener
 import org.jivesoftware.smack.packet.Message
 import java.util.*
 
+class MissingValueException(fieldName: String) : Exception("Missing value for: $fieldName")
+
 class AuctionMessageTranslator(
         private val sniperId: String,
         private val listener: AuctionEventListener) : MessageListener {
@@ -72,7 +74,11 @@ class AuctionMessageTranslator(
         }
 
         private operator fun get(fieldName: String): String {
-            return fields[fieldName]!!
+            if (fields[fieldName] == null) {
+                return fields[fieldName]!!
+            }
+
+            throw MissingValueException(fieldName)
         }
 
         private fun addField(field: String) {
