@@ -3,10 +3,8 @@ package endtoend.auctionsniper
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import support.auctionsniper.ApplicationRunner
 import support.auctionsniper.FakeAuctionServer
-
-
+import support.auctionsniper.ApplicationRunner
 
 class AuctionSniperEndToEndTest {
     private lateinit var auction: FakeAuctionServer
@@ -104,6 +102,33 @@ class AuctionSniperEndToEndTest {
 
         auction.announceClosed()
         application.showsSniperHasLostAuction(auction)
+    }
+
+    @Test
+    fun sniperReportsInvalidAuctionMessageAndStopsRespondingToEvents() {
+        val brokenMessage = "a broken message"
+
+        auction.startSellingItem()
+        val auction2 = FakeAuctionServer("item-65432")
+        auction2.startSellingItem()
+
+        application.startBiddingIn(auction, auction2)
+        auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
+
+        auction.reportPrice(500, 20, "other bidder")
+        auction.hasReceivedBid(520, ApplicationRunner.SNIPER_XMPP_ID)
+
+        auction.sendInvalidMessageContaining(brokenMessage)
+        application.showsSniperHasFailed(auction)
+
+        auction.reportPrice(520, 21, "other bidder")
+
+        auction2.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_XMPP_ID)
+        auction2.reportPrice(600, 6, "other bidder")
+        application.hasShownSniperIsBidding(auction2, 600, 606)
+
+        application.reportsInvalidMessage(auction, brokenMessage)
+        application.showsSniperHasFailed(auction)
     }
 
     @AfterEach

@@ -1,6 +1,7 @@
 package support.auctionsniper
 
 import auctionsniper.Main
+import auctionsniper.SniperState
 import auctionsniper.SniperState.*
 import auctionsniper.ui.MainWindow
 import auctionsniper.ui.SnipersTableModel
@@ -50,6 +51,13 @@ class ApplicationRunner {
         driver = AuctionSniperDriver(1000)
         driver.hasTitle(MainWindow.APPLICATION_TITLE)
         driver.hasColumnTitles()
+    }
+
+    fun showsSniperHasFailed(auction: FakeAuctionServer) {
+        driver.showsSniperStatus(auction.itemId, 0, 0, SnipersTableModel.textFor(SniperState.FAILED))
+    }
+
+    fun reportsInvalidMessage(auction: FakeAuctionServer, brokenMessage: String) {
     }
 
     fun hasShownSniperIsBidding(auction: FakeAuctionServer, lastPrice: Int, lastBid: Int) {

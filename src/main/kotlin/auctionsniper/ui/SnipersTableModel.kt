@@ -14,7 +14,7 @@ class SnipersTableModel : AbstractTableModel(), SniperListener, PortfolioListene
         }
 
         private val STATUS_TEXT = arrayOf(
-                "Joining", "Bidding", "Winning", "Losing", "Lost", "Won"
+                "Joining", "Bidding", "Winning", "Losing", "Lost", "Won", "Failed"
         )
     }
 

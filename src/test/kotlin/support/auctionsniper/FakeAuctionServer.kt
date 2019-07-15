@@ -63,6 +63,10 @@ class FakeAuctionServer(internal val itemId: String) {
         messageListener.receivesAMessage(matcher)
         Assert.assertThat(currentChat.participant, Matchers.equalTo(sniperId))
     }
+
+    fun sendInvalidMessageContaining(brokenMessage: String) {
+        currentChat.sendMessage(brokenMessage)
+    }
 }
 
 

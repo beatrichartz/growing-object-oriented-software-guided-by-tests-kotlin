@@ -21,7 +21,7 @@ enum class SniperState {
             return LOST
         }
     },
-    LOST, WON;
+    LOST, WON, FAILED;
 
     open fun whenAuctionClosed(): SniperState {
         throw IllegalStateException("Auction is already closed")
