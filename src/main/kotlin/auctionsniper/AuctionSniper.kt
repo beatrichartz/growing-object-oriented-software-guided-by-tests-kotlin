@@ -13,6 +13,9 @@ class AuctionSniper(private val item: Item,
         notifyChange()
     }
 
+    override fun auctionFailed() {
+    }
+
     override fun currentPrice(price: Int, increment: Int, priceSource: PriceSource) {
         snapshot = when (priceSource) {
             PriceSource.FromSniper ->

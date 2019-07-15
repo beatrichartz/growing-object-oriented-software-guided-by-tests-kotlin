@@ -58,6 +58,9 @@ class XMPPAuctionHouseTest {
 
     private fun auctionClosedListener(auctionWasClosed: CountDownLatch): AuctionEventListener {
         return object : AuctionEventListener {
+            override fun auctionFailed() {
+            }
+
             override fun auctionClosed() {
                 auctionWasClosed.countDown()
             }

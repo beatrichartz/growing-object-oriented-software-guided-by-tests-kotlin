@@ -9,6 +9,9 @@ import org.jmock.junit5.JUnit5Mockery
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import unit.auctionsniper.expect
+import org.jmock.Expectations
+
+
 
 class AuctionMessageTranslatorTest {
     companion object {
@@ -52,6 +55,18 @@ class AuctionMessageTranslatorTest {
         }.whenRunning {
             val message = Message()
             message.body = "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: $SNIPER_ID;"
+
+            translator.processMessage(UNUSED_CHAT, message)
+        }
+    }
+
+    @Test
+    internal fun notifiesAuctionFailedWhenBadMessageReceived() {
+        context.expect {
+                exactly(1).of(listener).auctionFailed()
+        }.whenRunning {
+            val message = Message()
+            message.body = "a bad message"
 
             translator.processMessage(UNUSED_CHAT, message)
         }

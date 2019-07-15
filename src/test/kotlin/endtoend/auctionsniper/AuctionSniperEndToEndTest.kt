@@ -105,7 +105,7 @@ class AuctionSniperEndToEndTest {
     }
 
     @Test
-    fun sniperReportsInvalidAuctionMessageAndStopsRespondingToEvents() {
+    internal fun sniperReportsInvalidAuctionMessageAndStopsRespondingToEvents() {
         val brokenMessage = "a broken message"
 
         auction.startSellingItem()
